@@ -1,6 +1,9 @@
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { requireAdminSession } from "@/lib/auth";
 
-export default function AdminQuotationsPage() {
+export default async function AdminQuotationsPage() {
+  await requireAdminSession();
+
   return (
     <section className="space-y-6">
       <SectionHeading title="Quotation Management" description="Quotation creation and lifecycle scaffold." />

@@ -1,12 +1,19 @@
+import { redirect } from "next/navigation";
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { AdminLoginForm } from "@/features/admin/AdminLoginForm";
+import { getAdminSession } from "@/lib/auth";
 
-export default function AdminLoginPage() {
+export default async function AdminLoginPage() {
+  const session = await getAdminSession();
+
+  if (session) {
+    redirect("/admin/dashboard");
+  }
+
   return (
     <section className="space-y-6">
-      <SectionHeading title="Admin Login" description="Authentication UI placeholder (logic intentionally deferred)." />
-      <div className="rounded-xl border border-brand-border bg-brand-card p-6 text-brand-muted">
-        Credentials form and session logic will be implemented in the auth module.
-      </div>
+      <SectionHeading title="Admin Login" description="Sign in to manage leads and operations." />
+      <AdminLoginForm />
     </section>
   );
 }

@@ -27,6 +27,10 @@ export function badRequestResponse(message = "Bad request.", errors?: unknown) {
   return jsonResponse({ success: false, message, errors }, 400);
 }
 
+export function unauthorizedResponse(message = "Authentication is required.") {
+  return jsonResponse({ success: false, message }, 401);
+}
+
 export function notFoundResponse(message = "Resource was not found.") {
   return jsonResponse({ success: false, message }, 404);
 }

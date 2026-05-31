@@ -1,6 +1,9 @@
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { requireAdminSession } from "@/lib/auth";
 
-export default function AdminProjectsPage() {
+export default async function AdminProjectsPage() {
+  await requireAdminSession();
+
   return (
     <section className="space-y-6">
       <SectionHeading title="Project Case Studies" description="Projects CRUD and publishing scaffold." />

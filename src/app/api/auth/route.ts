@@ -1,11 +1,5 @@
-import { NextResponse } from "next/server";
+import { badRequestResponse } from "@/lib/api/response";
 
 export async function POST() {
-  return NextResponse.json(
-    {
-      data: null,
-      meta: { message: "Auth API placeholder. Login logic intentionally not implemented in scaffold phase." },
-    },
-    { status: 501 },
-  );
+  return badRequestResponse("Use /api/auth/login or /api/auth/logout.");
 }

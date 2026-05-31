@@ -1,6 +1,7 @@
 import type { LeadStatus } from "@/config/lifecycle";
 import { isValidLeadId, updateLeadStatusById } from "@/features/leads";
-import { badRequestResponse, notFoundResponse, serverErrorResponse, successResponse } from "@/lib/api/response";
+import { badRequestResponse, notFoundResponse, serverErrorResponse, successResponse, unauthorizedResponse } from "@/lib/api/response";
+import { getAdminSessionFromRequest } from "@/lib/auth";
 import { isValidLeadStatus } from "@/lib/validations/status";
 
 interface LeadStatusRouteProps {
@@ -11,6 +12,12 @@ export const dynamic = "force-dynamic";
 
 export async function PATCH(request: Request, { params }: LeadStatusRouteProps) {
   try {
+    const session = await getAdminSessionFromRequest(request);
+
+    if (!session) {
+      return unauthorizedResponse("Authentication is required to update lead status.");
+    }
+
     const { id } = await params;
 
     if (!isValidLeadId(id)) {

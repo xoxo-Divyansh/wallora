@@ -25,6 +25,9 @@ npm install
 ```bash
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/wallora
 MONGODB_DB=wallora
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD_HASH=$2b$10$replace_with_a_bcrypt_hash
+JWT_SECRET=replace_with_a_long_random_secret
 ```
 3. Run development server:
 ```bash
@@ -35,6 +38,14 @@ npm run dev
 ## Environment Variables
 - `MONGODB_URI`: required for lead capture persistence.
 - `MONGODB_DB`: optional database name, defaults to `wallora`.
+- `ADMIN_EMAIL`: email allowed to sign in to the admin area.
+- `ADMIN_PASSWORD_HASH`: bcrypt hash for the admin password.
+- `JWT_SECRET`: long random secret used to sign admin session cookies.
+
+Generate a local admin password hash with:
+```bash
+node -e "const bcrypt=require('bcryptjs'); bcrypt.hash('your-password', 10).then(console.log)"
+```
 
 ## Current Scaffold Status
 Implemented in this phase:
@@ -94,9 +105,12 @@ Implemented after the foundation scaffold:
 - Static MVP project case-study catalog in `src/features/projects`
 - Project listing, dynamic case-study pages, and grouped gallery proof
 - `GET /api/projects` and `GET /api/projects/[slug]` for project data
+- Env-backed admin login at `/admin/login`
+- HttpOnly JWT admin session cookie
+- Protected admin pages and lead management APIs
 
 ## Not Implemented Yet (Intentional)
-- Authentication/session logic
+- User registration, forgot password, and multi-user role management
 - Form validation schemas and full business rules
 - Quotation workflow and CRUD business services
 - Estimator result persistence
@@ -105,7 +119,7 @@ Implemented after the foundation scaffold:
 - Production observability and analytics wiring
 
 ## Next Implementation Steps
-1. Add admin auth and role-protected routes.
-2. Build quotations and project publishing workflows.
-3. Add MongoDB-backed content CRUD after admin auth is in place.
-4. Replace placeholder visual blocks with real optimized media assets.
+1. Build quotations and project publishing workflows.
+2. Add MongoDB-backed content CRUD after admin auth is in place.
+3. Replace placeholder visual blocks with real optimized media assets.
+4. Add audit logging for admin changes.

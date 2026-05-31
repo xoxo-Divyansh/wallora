@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { requireAdminSession } from "@/lib/auth";
 
 const adminLinks = [
   { href: "/admin/leads", label: "Leads" },
@@ -8,7 +9,9 @@ const adminLinks = [
   { href: "/admin/projects", label: "Projects" },
 ];
 
-export default function AdminDashboardPage() {
+export default async function AdminDashboardPage() {
+  await requireAdminSession();
+
   return (
     <section className="space-y-6">
       <SectionHeading title="Admin Dashboard" description="Operations dashboard scaffold." />

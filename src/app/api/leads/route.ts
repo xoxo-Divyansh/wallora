@@ -1,11 +1,24 @@
 import { createLead, getLeads } from "@/features/leads";
-import { createdResponse, serverErrorResponse, successResponse, validationErrorResponse } from "@/lib/api/response";
+import {
+  createdResponse,
+  serverErrorResponse,
+  successResponse,
+  unauthorizedResponse,
+  validationErrorResponse,
+} from "@/lib/api/response";
+import { getAdminSessionFromRequest } from "@/lib/auth";
 import { validateCreateLead } from "@/lib/validations/lead";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const session = await getAdminSessionFromRequest(request);
+
+    if (!session) {
+      return unauthorizedResponse("Authentication is required to view leads.");
+    }
+
     const leads = await getLeads();
     return successResponse(leads, "Leads fetched successfully.");
   } catch (error) {

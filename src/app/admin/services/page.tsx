@@ -1,6 +1,9 @@
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { requireAdminSession } from "@/lib/auth";
 
-export default function AdminServicesPage() {
+export default async function AdminServicesPage() {
+  await requireAdminSession();
+
   return (
     <section className="space-y-6">
       <SectionHeading title="Service Catalog" description="Service CRUD scaffold." />

@@ -1,11 +1,14 @@
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { AdminLeadTable } from "@/features/leads/AdminLeadTable";
 import { getLeads } from "@/features/leads";
+import { requireAdminSession } from "@/lib/auth";
 import type { Lead } from "@/types/lead";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminLeadsPage() {
+  await requireAdminSession();
+
   let leads: Lead[] = [];
   let errorMessage: string | null = null;
 
