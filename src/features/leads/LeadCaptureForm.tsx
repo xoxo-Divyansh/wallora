@@ -70,8 +70,8 @@ export function LeadCaptureForm({ defaults }: LeadCaptureFormProps) {
     if (!response.ok) {
       setState({
         status: "error",
-        message: result.error?.message ?? "Unable to submit enquiry.",
-        fields: result.error?.fields,
+        message: result.message ?? "Unable to submit enquiry.",
+        fields: result.errors,
       });
       return;
     }

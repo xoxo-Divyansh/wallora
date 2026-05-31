@@ -52,7 +52,7 @@ export function AdminLeadTable({ initialLeads }: AdminLeadTableProps) {
       setLeads(previousLeads);
       setFeedback({
         type: "error",
-        message: result.error?.message ?? "Unable to update lead status.",
+        message: result.message ?? "Unable to update lead status.",
       });
       setUpdatingLeadId(null);
       return;

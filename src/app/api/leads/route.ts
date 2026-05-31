@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { createLead, getLeads } from "@/features/leads";
+import { createdResponse, serverErrorResponse, successResponse, validationErrorResponse } from "@/lib/api/response";
 import { validateCreateLead } from "@/lib/validations/lead";
 
 export const dynamic = "force-dynamic";
@@ -7,19 +7,10 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const leads = await getLeads();
-    return NextResponse.json({ data: leads });
+    return successResponse(leads, "Leads fetched successfully.");
   } catch (error) {
     console.error("Failed to fetch leads", error);
-
-    return NextResponse.json(
-      {
-        error: {
-          code: "LEADS_FETCH_FAILED",
-          message: "Unable to fetch leads.",
-        },
-      },
-      { status: 500 },
-    );
+    return serverErrorResponse("Unable to fetch leads.");
   }
 }
 
@@ -29,31 +20,13 @@ export async function POST(request: Request) {
     const validation = validateCreateLead(payload);
 
     if (!validation.success) {
-      return NextResponse.json(
-        {
-          error: {
-            code: "VALIDATION_ERROR",
-            message: "Please check the highlighted fields.",
-            fields: validation.errors,
-          },
-        },
-        { status: 400 },
-      );
+      return validationErrorResponse(validation.errors);
     }
 
     const lead = await createLead(validation.data);
-    return NextResponse.json({ data: lead }, { status: 201 });
+    return createdResponse(lead, "Lead created successfully.");
   } catch (error) {
     console.error("Failed to create lead", error);
-
-    return NextResponse.json(
-      {
-        error: {
-          code: "LEAD_CREATE_FAILED",
-          message: "Unable to create lead right now.",
-        },
-      },
-      { status: 500 },
-    );
+    return serverErrorResponse("Unable to create lead right now.");
   }
 }

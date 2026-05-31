@@ -101,8 +101,8 @@ export function EstimatorForm() {
     if (!response.ok) {
       setState({
         status: "error",
-        message: result.error?.message ?? "Unable to calculate estimate.",
-        fields: result.error?.fields,
+        message: result.message ?? "Unable to calculate estimate.",
+        fields: result.errors,
       });
       return;
     }
