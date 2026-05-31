@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, useMemo, useState } from "react";
+import Link from "next/link";
 import { LEAD_STATUSES, type LeadStatus } from "@/config/lifecycle";
 import type { Lead } from "@/types/lead";
 
@@ -97,6 +98,7 @@ export function AdminLeadTable({ initialLeads }: AdminLeadTableProps) {
                 <th className="px-4 py-3 font-semibold">Status</th>
                 <th className="px-4 py-3 font-semibold">Source</th>
                 <th className="px-4 py-3 font-semibold">Created</th>
+                <th className="px-4 py-3 font-semibold">Quote</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-brand-border">
@@ -132,6 +134,14 @@ export function AdminLeadTable({ initialLeads }: AdminLeadTableProps) {
                   </td>
                   <td className="px-4 py-4 align-top text-brand-muted">{lead.source}</td>
                   <td className="px-4 py-4 align-top text-brand-muted">{formatDate(lead.createdAt)}</td>
+                  <td className="px-4 py-4 align-top">
+                    <Link
+                      className="inline-flex rounded-md border border-brand-border px-3 py-2 text-xs font-semibold text-brand-text transition hover:border-brand-accent hover:text-brand-accent"
+                      href={`/admin/quotations?leadId=${lead.id}`}
+                    >
+                      Create Quote
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>

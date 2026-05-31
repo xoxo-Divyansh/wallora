@@ -68,6 +68,16 @@ export async function getLeads(): Promise<Lead[]> {
   return leads.map(toLead);
 }
 
+export async function getLeadById(id: string): Promise<Lead | null> {
+  if (!isValidLeadId(id)) {
+    return null;
+  }
+
+  const collection = await getLeadCollection();
+  const lead = await collection.findOne({ _id: new ObjectId(id) });
+  return lead ? toLead(lead) : null;
+}
+
 export async function updateLeadStatusById(id: string, status: LeadStatus): Promise<Lead | null> {
   const collection = await getLeadCollection();
   const result = await collection.findOneAndUpdate(

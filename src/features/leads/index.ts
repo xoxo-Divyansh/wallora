@@ -4,4 +4,4 @@ export interface FeatureModuleInfo {
 }
 
 export const leadsFeature: FeatureModuleInfo = { domain: "leads", status: "scaffolded" };
-export { createLead, getLeads, isValidLeadId, updateLeadStatusById } from "./repository";
+export { createLead, getLeadById, getLeads, isValidLeadId, updateLeadStatusById } from "./repository";

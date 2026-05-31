@@ -7,7 +7,7 @@ export const LEAD_STATUSES = [
   "rejected",
 ] as const;
 
-export const QUOTATION_STATUSES = ["draft", "sent", "accepted", "rejected"] as const;
+export const QUOTATION_STATUSES = ["draft", "sent", "accepted", "rejected", "expired"] as const;
 
 export const PROJECT_STATUSES = ["planned", "in_progress", "inspection", "completed"] as const;
 
