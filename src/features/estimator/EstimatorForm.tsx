@@ -14,6 +14,10 @@ import {
   type EstimatorServiceType,
 } from "@/lib/estimator";
 
+interface EstimatorFormProps {
+  defaultServiceType?: EstimatorServiceType;
+}
+
 type EstimateState =
   | { status: "idle" }
   | { status: "loading" }
@@ -54,8 +58,13 @@ function formatCurrency(value: number) {
   }).format(value);
 }
 
-export function EstimatorForm() {
+function isEstimatorServiceType(value: string | undefined): value is EstimatorServiceType {
+  return ESTIMATOR_SERVICE_TYPES.includes(value as EstimatorServiceType);
+}
+
+export function EstimatorForm({ defaultServiceType }: EstimatorFormProps) {
   const [state, setState] = useState<EstimateState>({ status: "idle" });
+  const serviceDefault = isEstimatorServiceType(defaultServiceType) ? defaultServiceType : "interior_painting";
 
   const contactHref = useMemo(() => {
     if (state.status !== "success") {
@@ -129,7 +138,7 @@ export function EstimatorForm() {
         <div className="grid gap-4 md:grid-cols-2">
           <label className="space-y-2 text-sm font-medium">
             Service
-            <select className={inputClass} name="serviceType" defaultValue="interior_painting">
+            <select className={inputClass} name="serviceType" defaultValue={serviceDefault}>
               {ESTIMATOR_SERVICE_TYPES.map((serviceType) => (
                 <option key={serviceType} value={serviceType}>
                   {SERVICE_LABELS[serviceType]}

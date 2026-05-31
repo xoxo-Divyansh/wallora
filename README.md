@@ -88,16 +88,20 @@ Implemented after the foundation scaffold:
 - Deterministic estimator rules in `src/lib/estimator`
 - `POST /api/estimator` for indicative price and timeline estimates
 - Estimator CTA prefill into `/contact`
+- Static MVP service catalog in `src/features/services`
+- SEO-ready service listing and dynamic service detail pages
+- `GET /api/services` and `GET /api/services/[slug]` for service data
 
 ## Not Implemented Yet (Intentional)
 - Authentication/session logic
 - Form validation schemas and full business rules
 - Quotation workflow and CRUD business services
 - Estimator result persistence
+- MongoDB-backed service CRUD
 - Production observability and analytics wiring
 
 ## Next Implementation Steps
-1. Add richer validation schemas and reusable API error helpers.
+1. Add project/case-study data layer and dynamic project pages.
 2. Add admin auth and role-protected routes.
 3. Build quotations and project publishing workflows.
-4. Add estimator-to-lead source analytics once tracking is introduced.
+4. Add MongoDB-backed service CRUD after admin auth is in place.

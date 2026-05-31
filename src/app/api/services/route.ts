@@ -1,8 +1,6 @@
-import { NextResponse } from "next/server";
+import { getServices } from "@/features/services";
+import { successResponse } from "@/lib/api/response";
 
 export async function GET() {
-  return NextResponse.json({
-    data: [],
-    meta: { message: "Service listing placeholder." },
-  });
+  return successResponse(getServices(), "Services fetched successfully.");
 }
