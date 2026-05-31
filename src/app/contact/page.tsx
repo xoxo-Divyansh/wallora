@@ -1,12 +1,14 @@
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { LeadCaptureForm } from "@/features/leads/LeadCaptureForm";
 
 export default function ContactPage() {
   return (
     <section className="space-y-6">
-      <SectionHeading title="Book Free Consultation" description="Lead capture entry point scaffold." />
-      <div className="rounded-xl border border-brand-border bg-brand-card p-6 text-brand-muted">
-        Contact form and validation wiring will be implemented in the leads feature module.
-      </div>
+      <SectionHeading
+        title="Book Free Consultation"
+        description="Share your requirement and the operations team will pick it up from the lead dashboard."
+      />
+      <LeadCaptureForm />
     </section>
   );
 }

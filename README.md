@@ -14,17 +14,27 @@ This repository currently implements the **foundation phase** aligned with the d
 - Next.js (App Router)
 - TypeScript
 - Tailwind CSS
+- MongoDB
 
 ## Setup
 1. Install dependencies:
 ```bash
 npm install
 ```
-2. Run development server:
+2. Create `.env.local`:
+```bash
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/wallora
+MONGODB_DB=wallora
+```
+3. Run development server:
 ```bash
 npm run dev
 ```
-3. Open [http://localhost:3000](http://localhost:3000)
+4. Open [http://localhost:3000](http://localhost:3000)
+
+## Environment Variables
+- `MONGODB_URI`: required for lead capture persistence.
+- `MONGODB_DB`: optional database name, defaults to `wallora`.
 
 ## Current Scaffold Status
 Implemented in this phase:
@@ -64,17 +74,25 @@ Implemented in this phase:
   - `src/types/*`
   - Lifecycle constants in `src/config/lifecycle.ts`
 
+## Current Feature Status
+Implemented after the foundation scaffold:
+- Lead capture form at `/contact`
+- Server-side lead validation
+- MongoDB connection layer with development-safe cached client
+- `POST /api/leads` for public lead submission
+- `GET /api/leads` for admin lead retrieval
+- Admin lead visibility at `/admin/leads`
+
 ## Not Implemented Yet (Intentional)
-- Database connection and persistence
 - Authentication/session logic
 - Form validation schemas and full business rules
 - Estimator calculation logic
-- CRUD business services and repository layer
+- Quotation workflow and CRUD business services
 - Production observability and analytics wiring
 
 ## Next Implementation Steps
-1. Implement validation schemas and request contracts for all API routes.
-2. Add MongoDB models/repositories and connect persistence.
-3. Build lead submission + estimator vertical slice.
+1. Add lead status update flow for admin operations.
+2. Implement estimator calculation logic and `/api/estimator`.
+3. Add richer validation schemas and reusable API error helpers.
 4. Implement admin auth and role-protected routes.
 5. Build quotations and project publishing workflows.
