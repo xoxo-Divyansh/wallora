@@ -82,6 +82,8 @@ Implemented after the foundation scaffold:
 - `POST /api/leads` for public lead submission
 - `GET /api/leads` for admin lead retrieval
 - Admin lead visibility at `/admin/leads`
+- Admin lead status updates from `/admin/leads`
+- `PATCH /api/leads/[id]/status` for lifecycle state changes
 
 ## Not Implemented Yet (Intentional)
 - Authentication/session logic
@@ -91,8 +93,7 @@ Implemented after the foundation scaffold:
 - Production observability and analytics wiring
 
 ## Next Implementation Steps
-1. Add lead status update flow for admin operations.
-2. Implement estimator calculation logic and `/api/estimator`.
-3. Add richer validation schemas and reusable API error helpers.
-4. Implement admin auth and role-protected routes.
-5. Build quotations and project publishing workflows.
+1. Implement estimator calculation logic and `/api/estimator`.
+2. Add richer validation schemas and reusable API error helpers.
+3. Add admin auth and role-protected routes.
+4. Build quotations and project publishing workflows.

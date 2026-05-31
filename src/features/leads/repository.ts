@@ -1,6 +1,7 @@
 import { ObjectId, type Collection, type WithId } from "mongodb";
 import { getDb } from "@/lib/db";
 import type { LeadModel } from "@/models/Lead";
+import type { LeadStatus } from "@/config/lifecycle";
 import type { CreateLeadInput, Lead } from "@/types/lead";
 
 let indexesEnsured = false;
@@ -65,6 +66,17 @@ export async function getLeads(): Promise<Lead[]> {
   const collection = await getLeadCollection();
   const leads = await collection.find().sort({ createdAt: -1 }).limit(100).toArray();
   return leads.map(toLead);
+}
+
+export async function updateLeadStatusById(id: string, status: LeadStatus): Promise<Lead | null> {
+  const collection = await getLeadCollection();
+  const result = await collection.findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    { $set: { status, updatedAt: new Date() } },
+    { returnDocument: "after" },
+  );
+
+  return result ? toLead(result) : null;
 }
 
 export function isValidLeadId(id: string): boolean {
