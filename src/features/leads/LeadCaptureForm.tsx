@@ -23,7 +23,19 @@ const services = [
 const inputClass =
   "w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm text-brand-text outline-none transition focus:border-brand-accent";
 
-export function LeadCaptureForm() {
+interface LeadCaptureFormDefaults {
+  serviceType?: string;
+  propertyType?: string;
+  areaSize?: string;
+  city?: string;
+  sourceDetail?: string;
+}
+
+interface LeadCaptureFormProps {
+  defaults?: LeadCaptureFormDefaults;
+}
+
+export function LeadCaptureForm({ defaults }: LeadCaptureFormProps) {
   const [state, setState] = useState<SubmitState>({ status: "idle" });
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -43,7 +55,8 @@ export function LeadCaptureForm() {
       budgetRange: formData.get("budgetRange"),
       preferredDate: formData.get("preferredDate"),
       message: formData.get("message"),
-      source: "contact",
+      source: defaults?.sourceDetail === "cost_estimator" ? "estimator" : "contact",
+      sourceDetail: defaults?.sourceDetail,
     };
 
     const response = await fetch("/api/leads", {
@@ -95,16 +108,19 @@ export function LeadCaptureForm() {
 
         <label className="space-y-2 text-sm font-medium">
           City
-          <input className={inputClass} name="city" placeholder="Bangalore" />
+          <input className={inputClass} defaultValue={defaults?.city} name="city" placeholder="Bangalore" />
           {fieldErrors?.city ? <span className="text-xs text-red-700">{fieldErrors.city}</span> : null}
         </label>
 
         <label className="space-y-2 text-sm font-medium">
           Service
-          <select className={inputClass} name="serviceType" defaultValue="">
+          <select className={inputClass} name="serviceType" defaultValue={defaults?.serviceType ?? ""}>
             <option value="" disabled>
               Select service
             </option>
+            {defaults?.serviceType && !services.includes(defaults.serviceType) ? (
+              <option value={defaults.serviceType}>{defaults.serviceType}</option>
+            ) : null}
             {services.map((service) => (
               <option key={service} value={service}>
                 {service}
@@ -116,8 +132,11 @@ export function LeadCaptureForm() {
 
         <label className="space-y-2 text-sm font-medium">
           Property Type
-          <select className={inputClass} name="propertyType" defaultValue="">
+          <select className={inputClass} name="propertyType" defaultValue={defaults?.propertyType ?? ""}>
             <option value="">Not sure yet</option>
+            {defaults?.propertyType && !["1BHK", "2BHK", "3BHK", "Office"].includes(defaults.propertyType) ? (
+              <option value={defaults.propertyType}>{defaults.propertyType}</option>
+            ) : null}
             <option value="1BHK">1BHK</option>
             <option value="2BHK">2BHK</option>
             <option value="3BHK">3BHK</option>
@@ -127,7 +146,7 @@ export function LeadCaptureForm() {
 
         <label className="space-y-2 text-sm font-medium">
           Approx Area
-          <input className={inputClass} min="1" name="areaSize" placeholder="1200" type="number" />
+          <input className={inputClass} defaultValue={defaults?.areaSize} min="1" name="areaSize" placeholder="1200" type="number" />
           {fieldErrors?.areaSize ? <span className="text-xs text-red-700">{fieldErrors.areaSize}</span> : null}
         </label>
 

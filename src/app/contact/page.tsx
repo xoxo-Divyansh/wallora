@@ -1,14 +1,26 @@
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { LeadCaptureForm } from "@/features/leads/LeadCaptureForm";
 
-export default function ContactPage() {
+interface ContactPageProps {
+  searchParams: Promise<{
+    serviceType?: string;
+    propertyType?: string;
+    areaSize?: string;
+    city?: string;
+    sourceDetail?: string;
+  }>;
+}
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  const defaults = await searchParams;
+
   return (
     <section className="space-y-6">
       <SectionHeading
         title="Book Free Consultation"
         description="Share your requirement and the operations team will pick it up from the lead dashboard."
       />
-      <LeadCaptureForm />
+      <LeadCaptureForm defaults={defaults} />
     </section>
   );
 }

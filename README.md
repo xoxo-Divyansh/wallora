@@ -84,16 +84,20 @@ Implemented after the foundation scaffold:
 - Admin lead visibility at `/admin/leads`
 - Admin lead status updates from `/admin/leads`
 - `PATCH /api/leads/[id]/status` for lifecycle state changes
+- Cost estimator form at `/estimator`
+- Deterministic estimator rules in `src/lib/estimator`
+- `POST /api/estimator` for indicative price and timeline estimates
+- Estimator CTA prefill into `/contact`
 
 ## Not Implemented Yet (Intentional)
 - Authentication/session logic
 - Form validation schemas and full business rules
-- Estimator calculation logic
 - Quotation workflow and CRUD business services
+- Estimator result persistence
 - Production observability and analytics wiring
 
 ## Next Implementation Steps
-1. Implement estimator calculation logic and `/api/estimator`.
-2. Add richer validation schemas and reusable API error helpers.
-3. Add admin auth and role-protected routes.
-4. Build quotations and project publishing workflows.
+1. Add richer validation schemas and reusable API error helpers.
+2. Add admin auth and role-protected routes.
+3. Build quotations and project publishing workflows.
+4. Add estimator-to-lead source analytics once tracking is introduced.
