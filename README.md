@@ -91,6 +91,9 @@ Implemented after the foundation scaffold:
 - Static MVP service catalog in `src/features/services`
 - SEO-ready service listing and dynamic service detail pages
 - `GET /api/services` and `GET /api/services/[slug]` for service data
+- Static MVP project case-study catalog in `src/features/projects`
+- Project listing, dynamic case-study pages, and grouped gallery proof
+- `GET /api/projects` and `GET /api/projects/[slug]` for project data
 
 ## Not Implemented Yet (Intentional)
 - Authentication/session logic
@@ -98,10 +101,11 @@ Implemented after the foundation scaffold:
 - Quotation workflow and CRUD business services
 - Estimator result persistence
 - MongoDB-backed service CRUD
+- MongoDB-backed project CRUD and image uploads
 - Production observability and analytics wiring
 
 ## Next Implementation Steps
-1. Add project/case-study data layer and dynamic project pages.
-2. Add admin auth and role-protected routes.
-3. Build quotations and project publishing workflows.
-4. Add MongoDB-backed service CRUD after admin auth is in place.
+1. Add admin auth and role-protected routes.
+2. Build quotations and project publishing workflows.
+3. Add MongoDB-backed content CRUD after admin auth is in place.
+4. Replace placeholder visual blocks with real optimized media assets.

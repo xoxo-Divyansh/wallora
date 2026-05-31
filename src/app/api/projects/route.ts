@@ -1,8 +1,6 @@
-import { NextResponse } from "next/server";
+import { getProjects } from "@/features/projects";
+import { successResponse } from "@/lib/api/response";
 
 export async function GET() {
-  return NextResponse.json({
-    data: [],
-    meta: { message: "Projects listing placeholder." },
-  });
+  return successResponse(getProjects(), "Projects fetched successfully.");
 }

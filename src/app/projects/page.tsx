@@ -1,20 +1,85 @@
+import Link from "next/link";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { ProjectCard } from "@/components/ui/ProjectCard";
+import { getFeaturedProjects, getProjects } from "@/features/projects";
 
-const projects = [
-  { title: "2BHK Wall Renewal", city: "Hyderabad", serviceType: "Interior Painting", slug: "2bhk-wall-renewal" },
-  { title: "Exterior Protection Plan", city: "Mumbai", serviceType: "Exterior Painting", slug: "exterior-protection-plan" },
-];
+const primaryLinkClass =
+  "inline-flex w-full items-center justify-center rounded-md bg-brand-accent px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 sm:w-auto";
+const secondaryLinkClass =
+  "inline-flex w-full items-center justify-center rounded-md border border-brand-border bg-brand-card px-4 py-2 text-sm font-semibold text-brand-text transition hover:bg-stone-100 sm:w-auto";
 
 export default function ProjectsPage() {
+  const projects = getProjects();
+  const featuredProjects = getFeaturedProjects();
+  const tags = Array.from(new Set(projects.flatMap((project) => project.tags))).slice(0, 8);
+
   return (
-    <section className="space-y-6">
-      <SectionHeading title="Projects" description="Case-study listing scaffold." />
-      <div className="grid gap-4 md:grid-cols-2">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} {...project} />
+    <section className="space-y-8">
+      <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          eyebrow="Project Proof"
+          title="Realistic transformations, documented like case studies."
+          description="Browse before-after stories across painting, waterproofing, wallpaper, wood polish, and interior finishing."
+        />
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Link className={primaryLinkClass} href="/contact">
+            Book Similar Transformation
+          </Link>
+          <Link className={secondaryLinkClass} href="/estimator">
+            Estimate Your Project
+          </Link>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <span key={tag} className="rounded-full border border-brand-border bg-brand-card px-3 py-1 text-xs font-semibold text-brand-muted">
+            {tag}
+          </span>
         ))}
       </div>
+
+      {featuredProjects.length > 0 ? (
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">Featured Case Studies</h2>
+          <div className="grid gap-4 lg:grid-cols-3">
+            {featuredProjects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                budgetRange={project.budgetRange}
+                city={project.city}
+                featured={project.featured}
+                image={project.afterImages[0]}
+                serviceType={project.serviceType}
+                shortDescription={project.shortDescription}
+                slug={project.slug}
+                timeline={project.timeline}
+                title={project.title}
+              />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">All Projects</h2>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {projects.map((project) => (
+          <ProjectCard
+            key={project.id}
+            budgetRange={project.budgetRange}
+            city={project.city}
+            featured={project.featured}
+            image={project.galleryImages[0]}
+            serviceType={project.serviceType}
+            shortDescription={project.shortDescription}
+            slug={project.slug}
+            timeline={project.timeline}
+            title={project.title}
+          />
+        ))}
+        </div>
+      </section>
     </section>
   );
 }
