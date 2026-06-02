@@ -28,6 +28,12 @@ You can override the base URL if needed:
 VISUAL_QA_BASE_URL=http://localhost:3001 npm run screenshots
 ```
 
+To include a customer-facing quotation preview, provide a real quotation id:
+
+```bash
+VISUAL_QA_QUOTE_ID=replace_with_quotation_id npm run screenshots
+```
+
 ## Run
 
 ```bash
@@ -78,6 +84,7 @@ visual-qa/screenshots/mobile/admin-login.png
 - `/estimator`
 - `/contact`
 - `/admin/login`
+- `/quote/[id]` when `VISUAL_QA_QUOTE_ID` is provided
 
 Protected admin pages are intentionally not captured by default because they require a valid admin session.
 

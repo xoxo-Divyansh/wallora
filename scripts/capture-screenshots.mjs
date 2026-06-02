@@ -4,6 +4,7 @@ import path from "node:path";
 import process from "node:process";
 
 const baseUrl = process.env.VISUAL_QA_BASE_URL ?? "http://localhost:3000";
+const visualQaQuoteId = process.env.VISUAL_QA_QUOTE_ID;
 const outputRoot = path.join(process.cwd(), "visual-qa", "screenshots");
 
 const viewports = [
@@ -25,6 +26,10 @@ const pages = [
   { label: "contact", path: "/contact" },
   { label: "admin-login", path: "/admin/login" },
 ];
+
+if (visualQaQuoteId) {
+  pages.push({ label: "quote-preview", path: `/quote/${visualQaQuoteId}` });
+}
 
 function pageUrl(pagePath) {
   return new URL(pagePath, baseUrl).toString();

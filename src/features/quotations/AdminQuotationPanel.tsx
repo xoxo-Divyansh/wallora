@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useMemo, useState } from "react";
 import { QUOTATION_STATUSES, type QuotationStatus } from "@/config/lifecycle";
 import type { Lead } from "@/types/lead";
@@ -203,7 +204,7 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
         ) : (
           <div className="overflow-hidden rounded-lg border border-brand-border bg-brand-card">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[820px] text-left text-sm">
+              <table className="w-full min-w-[940px] text-left text-sm">
                 <thead className="bg-stone-100 text-xs uppercase text-brand-muted">
                   <tr>
                     <th className="px-4 py-3 font-semibold">Quote</th>
@@ -211,6 +212,7 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
                     <th className="px-4 py-3 font-semibold">Service</th>
                     <th className="px-4 py-3 font-semibold">Amount</th>
                     <th className="px-4 py-3 font-semibold">Status</th>
+                    <th className="px-4 py-3 font-semibold">Public</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-brand-border">
@@ -239,6 +241,14 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
                             </option>
                           ))}
                         </select>
+                      </td>
+                      <td className="px-4 py-4 align-top">
+                        <Link
+                          className="inline-flex rounded-md border border-brand-border px-3 py-2 text-xs font-semibold text-brand-text transition hover:border-brand-accent hover:text-brand-accent"
+                          href={`/quote/${quote.id}`}
+                        >
+                          View Public Quote
+                        </Link>
                       </td>
                     </tr>
                   ))}

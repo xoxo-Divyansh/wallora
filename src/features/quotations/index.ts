@@ -5,6 +5,7 @@ export {
   createQuotation,
   getQuotationById,
   getQuotations,
+  getPublicQuotationById,
   isValidQuotationId,
   updateQuotationStatusById,
 } from "./repository";

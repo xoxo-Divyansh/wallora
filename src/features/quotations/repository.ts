@@ -4,7 +4,7 @@ import { getLeadById, isValidLeadId, updateLeadStatusById } from "@/features/lea
 import { getDb } from "@/lib/db";
 import { calculateQuotationTotal } from "@/lib/quotations/calculate";
 import type { QuotationModel } from "@/models/Quotation";
-import type { CreateQuotationInput, Quotation } from "@/types/quotation";
+import type { CreateQuotationInput, PublicQuotation, Quotation } from "@/types/quotation";
 
 let indexesEnsured = false;
 
@@ -50,6 +50,29 @@ function toQuotation(document: WithId<QuotationModel>): Quotation {
   };
 }
 
+function toPublicQuotation(quotation: Quotation): PublicQuotation {
+  return {
+    id: quotation.id,
+    quoteNumber: quotation.quoteNumber,
+    customerName: quotation.customerName,
+    customerPhone: quotation.customerPhone,
+    serviceType: quotation.serviceType,
+    propertyType: quotation.propertyType,
+    areaSize: quotation.areaSize,
+    paintQuality: quotation.paintQuality,
+    labourCost: quotation.labourCost,
+    materialCost: quotation.materialCost,
+    additionalCost: quotation.additionalCost,
+    discount: quotation.discount,
+    tax: quotation.tax,
+    totalAmount: quotation.totalAmount,
+    status: quotation.status,
+    notes: quotation.notes,
+    validUntil: quotation.validUntil,
+    createdAt: quotation.createdAt,
+  };
+}
+
 function createQuoteNumber(date = new Date()): string {
   const stamp = date.toISOString().slice(0, 10).replace(/-/g, "");
   const suffix = Math.random().toString(36).slice(2, 8).toUpperCase();
@@ -72,6 +95,11 @@ export async function getQuotationById(id: string): Promise<Quotation | null> {
   const collection = await getQuotationCollection();
   const quotation = await collection.findOne({ _id: new ObjectId(id) });
   return quotation ? toQuotation(quotation) : null;
+}
+
+export async function getPublicQuotationById(id: string): Promise<PublicQuotation | null> {
+  const quotation = await getQuotationById(id);
+  return quotation ? toPublicQuotation(quotation) : null;
 }
 
 export async function createQuotation(input: CreateQuotationInput): Promise<Quotation | null> {
