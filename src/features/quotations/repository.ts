@@ -42,6 +42,7 @@ function toQuotation(document: WithId<QuotationModel>): Quotation {
     quoteNumber: document.quoteNumber,
     customerName: document.customerName,
     customerPhone: document.customerPhone,
+    customerEmail: document.customerEmail,
     serviceType: document.serviceType,
     propertyType: document.propertyType,
     areaSize: document.areaSize,
@@ -189,6 +190,22 @@ export async function updateQuotationStatusById(id: string, status: QuotationSta
     await updateLeadStatusById(result.leadId, "quoted");
   }
 
+  return toQuotation(result);
+}
+
+export async function markQuotationSentAfterEmail(id: string): Promise<Quotation | null> {
+  if (!isValidQuotationId(id)) return null;
+
+  const collection = await getQuotationCollection();
+  const result = await collection.findOneAndUpdate(
+    { _id: new ObjectId(id), status: "draft" },
+    { $set: { status: "sent", updatedAt: new Date() } },
+    { returnDocument: "after" },
+  );
+
+  if (!result) return getQuotationById(id);
+
+  await updateLeadStatusById(result.leadId, "quoted");
   return toQuotation(result);
 }
 

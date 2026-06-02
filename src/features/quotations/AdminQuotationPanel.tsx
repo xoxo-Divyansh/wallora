@@ -36,6 +36,7 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
   const [feedback, setFeedback] = useState<Feedback>(null);
   const [submitting, setSubmitting] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [emailingId, setEmailingId] = useState<string | null>(null);
 
   const selectedLead = useMemo(() => leads.find((lead) => lead.id === leadId), [leadId, leads]);
 
@@ -52,6 +53,7 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
         leadId,
         customerName: formData.get("customerName"),
         customerPhone: formData.get("customerPhone"),
+        customerEmail: formData.get("customerEmail"),
         serviceType: formData.get("serviceType"),
         propertyType: formData.get("propertyType"),
         areaSize: formData.get("areaSize"),
@@ -110,6 +112,30 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
     setFeedback({ type: "success", message: "Share quote link copied." });
   }
 
+  async function handleSendEmail(id: string) {
+    setEmailingId(id);
+    setFeedback(null);
+
+    const response = await fetch(`/api/quotations/${id}/send-email`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    const result = await response.json();
+
+    if (!response.ok) {
+      setFeedback({ type: "error", message: result.message ?? "Unable to send quotation email." });
+      setEmailingId(null);
+      return;
+    }
+
+    if (result.data?.quotation) {
+      setQuotations((current) => current.map((quote) => (quote.id === id ? result.data.quotation : quote)));
+    }
+
+    setFeedback({ type: "success", message: result.message ?? "Quotation email sent." });
+    setEmailingId(null);
+  }
+
   return (
     <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
       <form onSubmit={handleCreateQuotation} className="grid gap-4 rounded-lg border border-brand-border bg-brand-card p-5">
@@ -135,6 +161,11 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
           <label className="space-y-2 text-sm font-medium">
             Customer Phone
             <input className={inputClass} key={`phone-${leadId}`} name="customerPhone" defaultValue={selectedLead?.phone} />
+          </label>
+
+          <label className="space-y-2 text-sm font-medium">
+            Customer Email
+            <input className={inputClass} key={`email-${leadId}`} name="customerEmail" defaultValue={selectedLead?.email} type="email" />
           </label>
 
           <label className="space-y-2 text-sm font-medium">
@@ -210,7 +241,7 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
         ) : (
           <div className="overflow-hidden rounded-lg border border-brand-border bg-brand-card">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[1180px] text-left text-sm">
+              <table className="w-full min-w-[1280px] text-left text-sm">
                 <thead className="bg-stone-100 text-xs uppercase text-brand-muted">
                   <tr>
                     <th className="px-4 py-3 font-semibold">Quote</th>
@@ -219,6 +250,7 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
                     <th className="px-4 py-3 font-semibold">Amount</th>
                     <th className="px-4 py-3 font-semibold">Status</th>
                     <th className="px-4 py-3 font-semibold">Share</th>
+                    <th className="px-4 py-3 font-semibold">Email</th>
                     <th className="px-4 py-3 font-semibold">Public</th>
                     <th className="px-4 py-3 font-semibold">PDF</th>
                   </tr>
@@ -230,6 +262,7 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
                       <td className="px-4 py-4 align-top text-brand-muted">
                         <div className="font-medium text-brand-text">{quote.customerName}</div>
                         <div>{quote.customerPhone}</div>
+                        {quote.customerEmail ? <div>{quote.customerEmail}</div> : <div className="text-xs text-red-700">No email</div>}
                       </td>
                       <td className="px-4 py-4 align-top text-brand-muted">
                         <div>{quote.serviceType}</div>
@@ -270,6 +303,17 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
                         ) : (
                           <span className="text-xs text-brand-muted">Token pending</span>
                         )}
+                      </td>
+                      <td className="px-4 py-4 align-top">
+                        <button
+                          className="inline-flex rounded-md border border-brand-border px-3 py-2 text-xs font-semibold text-brand-text transition hover:border-brand-accent hover:text-brand-accent disabled:cursor-not-allowed disabled:opacity-50"
+                          disabled={!quote.customerEmail || emailingId === quote.id || ["accepted", "rejected", "expired"].includes(quote.status)}
+                          onClick={() => void handleSendEmail(quote.id)}
+                          title={!quote.customerEmail ? "Customer email is required before sending." : undefined}
+                          type="button"
+                        >
+                          {emailingId === quote.id ? "Sending..." : "Send Email"}
+                        </button>
                       </td>
                       <td className="px-4 py-4 align-top">
                         <Link

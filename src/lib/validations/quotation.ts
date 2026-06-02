@@ -44,6 +44,7 @@ export function validateCreateQuotation(input: unknown): QuotationValidationResu
   const leadId = readString(payload.leadId);
   const customerName = readString(payload.customerName);
   const customerPhone = readString(payload.customerPhone);
+  const customerEmail = readString(payload.customerEmail);
   const serviceType = readString(payload.serviceType);
   const paintQuality = readString(payload.paintQuality);
   const areaSize = readNumber(payload.areaSize);
@@ -78,6 +79,7 @@ export function validateCreateQuotation(input: unknown): QuotationValidationResu
       leadId: leadId!,
       customerName: customerName!,
       customerPhone: customerPhone!,
+      customerEmail,
       serviceType: serviceType!,
       propertyType: readString(payload.propertyType),
       areaSize,

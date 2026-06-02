@@ -10,6 +10,7 @@ export interface Quotation {
   customerPhone: string;
   quoteNumber: string;
   serviceType: string;
+  customerEmail?: string;
   propertyType?: string;
   areaSize?: number;
   paintQuality: PaintQuality;
@@ -51,6 +52,7 @@ export interface CreateQuotationInput {
   leadId: string;
   customerName: string;
   customerPhone: string;
+  customerEmail?: string;
   serviceType: string;
   propertyType?: string;
   areaSize?: number;

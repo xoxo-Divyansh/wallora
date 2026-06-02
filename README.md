@@ -28,6 +28,9 @@ MONGODB_DB=wallora
 ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD_HASH=$2b$10$replace_with_a_bcrypt_hash
 JWT_SECRET=replace_with_a_long_random_secret
+RESEND_API_KEY=re_replace_with_resend_api_key
+QUOTE_EMAIL_FROM="Wallora <quotes@example.com>"
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 3. Run development server:
 ```bash
@@ -41,6 +44,9 @@ npm run dev
 - `ADMIN_EMAIL`: email allowed to sign in to the admin area.
 - `ADMIN_PASSWORD_HASH`: bcrypt hash for the admin password.
 - `JWT_SECRET`: long random secret used to sign admin session cookies.
+- `RESEND_API_KEY`: server-only API key used to send quotation emails.
+- `QUOTE_EMAIL_FROM`: verified sender address used for quotation emails.
+- `NEXT_PUBLIC_APP_URL`: public app URL used to build secure quote share links.
 
 Generate a local admin password hash with:
 ```bash
@@ -125,18 +131,19 @@ Implemented after the foundation scaffold:
 - Secure customer quotation share links at `/quote/share/[token]`
 - Customer quote accept/reject actions for sent quotations
 - Token-based public quotation API and PDF routes under `/api/public/quotes/[token]`
+- Protected admin quote email delivery through Resend
 
 ## Not Implemented Yet (Intentional)
 - User registration, forgot password, and multi-user role management
 - Form validation schemas and full business rules
-- Email sending and payment collection
+- Payment collection
 - Estimator result persistence
 - MongoDB-backed service CRUD
 - MongoDB-backed project CRUD and image uploads
 - Production observability and analytics wiring
 
 ## Next Implementation Steps
-1. Add email delivery for secure quotation share links.
+1. Add delivery status logging for quotation emails.
 2. Add MongoDB-backed content CRUD after admin auth is in place.
 3. Replace placeholder visual blocks with real optimized media assets.
 4. Add audit logging for admin changes.

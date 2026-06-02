@@ -9,6 +9,7 @@ export {
   getPublicQuotationById,
   getPublicQuotationByToken,
   isValidQuotationId,
+  markQuotationSentAfterEmail,
   updateQuotationStatusByToken,
   updateQuotationStatusById,
 } from "./repository";

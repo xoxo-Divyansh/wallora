@@ -7,6 +7,7 @@ export interface QuotationModel {
   quoteNumber: string;
   customerName: string;
   customerPhone: string;
+  customerEmail?: string;
   serviceType: string;
   propertyType?: string;
   areaSize?: number;
