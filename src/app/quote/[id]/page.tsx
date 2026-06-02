@@ -70,6 +70,7 @@ export default async function QuotePreviewPage({ params }: QuotePreviewPageProps
   if (!quotation) notFound();
 
   const contactHref = `/contact?serviceType=${encodeURIComponent(quotation.serviceType)}&sourceDetail=quotation_preview`;
+  const pdfHref = `/api/public/quotations/${quotation.id}/pdf`;
 
   return (
     <article className="mx-auto max-w-5xl space-y-8">
@@ -196,6 +197,9 @@ export default async function QuotePreviewPage({ params }: QuotePreviewPageProps
           </p>
         </div>
         <div className="flex flex-col gap-3 sm:flex-row">
+          <Link className={`${ctaClass} bg-brand-accent text-white hover:bg-[#7a603e]`} href={pdfHref}>
+            Download PDF
+          </Link>
           <Link className={`${ctaClass} bg-white text-brand-text hover:bg-[#efe3d1]`} href={contactHref}>
             Contact Wallora
           </Link>

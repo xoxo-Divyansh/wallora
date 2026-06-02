@@ -121,18 +121,19 @@ Implemented after the foundation scaffold:
 - Quotation status updates from `/admin/quotations`, including marking linked leads as quoted when a quote is sent
 - Public customer-facing quotation preview at `/quote/[id]`
 - Public-safe quotation API at `/api/public/quotations/[id]`
+- Public quotation PDF download at `/api/public/quotations/[id]/pdf`
 
 ## Not Implemented Yet (Intentional)
 - User registration, forgot password, and multi-user role management
 - Form validation schemas and full business rules
-- PDF quotation generation, email sending, and customer-facing quotation approval actions
+- Email sending and customer-facing quotation approval actions
 - Estimator result persistence
 - MongoDB-backed service CRUD
 - MongoDB-backed project CRUD and image uploads
 - Production observability and analytics wiring
 
 ## Next Implementation Steps
-1. Add quotation PDF generation or customer accept/reject actions.
+1. Add customer accept/reject actions or email delivery for quotations.
 2. Add MongoDB-backed content CRUD after admin auth is in place.
 3. Replace placeholder visual blocks with real optimized media assets.
 4. Add audit logging for admin changes.
