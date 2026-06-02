@@ -3,6 +3,7 @@ import type { PaintQuality } from "@/types/quotation";
 
 export interface QuotationModel {
   leadId: string;
+  publicShareToken?: string;
   quoteNumber: string;
   customerName: string;
   customerPhone: string;

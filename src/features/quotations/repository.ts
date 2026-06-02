@@ -1,3 +1,4 @@
+import { randomBytes } from "node:crypto";
 import { ObjectId, type Collection, type WithId } from "mongodb";
 import { type QuotationStatus } from "@/config/lifecycle";
 import { getLeadById, isValidLeadId, updateLeadStatusById } from "@/features/leads";
@@ -8,6 +9,13 @@ import type { CreateQuotationInput, PublicQuotation, Quotation } from "@/types/q
 
 let indexesEnsured = false;
 
+export type CustomerQuotationStatus = Extract<QuotationStatus, "accepted" | "rejected">;
+
+export type CustomerQuotationStatusUpdateResult =
+  | { outcome: "updated"; quotation: PublicQuotation }
+  | { outcome: "not_found" }
+  | { outcome: "not_sent"; quotation: PublicQuotation };
+
 async function getQuotationCollection(): Promise<Collection<QuotationModel>> {
   const db = await getDb();
   const collection = db.collection<QuotationModel>("quotations");
@@ -16,6 +24,7 @@ async function getQuotationCollection(): Promise<Collection<QuotationModel>> {
     await Promise.all([
       collection.createIndex({ quoteNumber: 1 }, { unique: true }),
       collection.createIndex({ leadId: 1 }),
+      collection.createIndex({ publicShareToken: 1 }, { unique: true, sparse: true }),
       collection.createIndex({ status: 1 }),
       collection.createIndex({ createdAt: -1 }),
     ]);
@@ -29,6 +38,7 @@ function toQuotation(document: WithId<QuotationModel>): Quotation {
   return {
     id: document._id.toString(),
     leadId: document.leadId,
+    publicShareToken: document.publicShareToken,
     quoteNumber: document.quoteNumber,
     customerName: document.customerName,
     customerPhone: document.customerPhone,
@@ -50,9 +60,9 @@ function toQuotation(document: WithId<QuotationModel>): Quotation {
   };
 }
 
-function toPublicQuotation(quotation: Quotation): PublicQuotation {
+function toPublicQuotation(quotation: Quotation, options: { includeId?: boolean } = { includeId: true }): PublicQuotation {
   return {
-    id: quotation.id,
+    id: options.includeId ? quotation.id : undefined,
     quoteNumber: quotation.quoteNumber,
     customerName: quotation.customerName,
     customerPhone: quotation.customerPhone,
@@ -73,6 +83,33 @@ function toPublicQuotation(quotation: Quotation): PublicQuotation {
   };
 }
 
+export function generatePublicShareToken(): string {
+  return randomBytes(32).toString("base64url");
+}
+
+async function ensurePublicShareToken(
+  collection: Collection<QuotationModel>,
+  document: WithId<QuotationModel>,
+): Promise<WithId<QuotationModel>> {
+  if (document.publicShareToken) return document;
+
+  const token = generatePublicShareToken();
+  const updated = await collection.findOneAndUpdate(
+    { _id: document._id, publicShareToken: { $exists: false } },
+    { $set: { publicShareToken: token, updatedAt: new Date() } },
+    { returnDocument: "after" },
+  );
+
+  if (updated) return updated;
+
+  const refreshed = await collection.findOne({ _id: document._id });
+  return refreshed ?? document;
+}
+
+function isValidPublicShareToken(token: string): boolean {
+  return /^[A-Za-z0-9_-]{32,}$/.test(token);
+}
+
 function createQuoteNumber(date = new Date()): string {
   const stamp = date.toISOString().slice(0, 10).replace(/-/g, "");
   const suffix = Math.random().toString(36).slice(2, 8).toUpperCase();
@@ -86,7 +123,8 @@ export function isValidQuotationId(id: string): boolean {
 export async function getQuotations(): Promise<Quotation[]> {
   const collection = await getQuotationCollection();
   const quotations = await collection.find().sort({ createdAt: -1 }).limit(100).toArray();
-  return quotations.map(toQuotation);
+  const tokenizedQuotations = await Promise.all(quotations.map((quotation) => ensurePublicShareToken(collection, quotation)));
+  return tokenizedQuotations.map(toQuotation);
 }
 
 export async function getQuotationById(id: string): Promise<Quotation | null> {
@@ -94,12 +132,22 @@ export async function getQuotationById(id: string): Promise<Quotation | null> {
 
   const collection = await getQuotationCollection();
   const quotation = await collection.findOne({ _id: new ObjectId(id) });
-  return quotation ? toQuotation(quotation) : null;
+  if (!quotation) return null;
+
+  return toQuotation(await ensurePublicShareToken(collection, quotation));
 }
 
 export async function getPublicQuotationById(id: string): Promise<PublicQuotation | null> {
   const quotation = await getQuotationById(id);
   return quotation ? toPublicQuotation(quotation) : null;
+}
+
+export async function getPublicQuotationByToken(token: string): Promise<PublicQuotation | null> {
+  if (!isValidPublicShareToken(token)) return null;
+
+  const collection = await getQuotationCollection();
+  const quotation = await collection.findOne({ publicShareToken: token });
+  return quotation ? toPublicQuotation(toQuotation(quotation), { includeId: false }) : null;
 }
 
 export async function createQuotation(input: CreateQuotationInput): Promise<Quotation | null> {
@@ -112,6 +160,7 @@ export async function createQuotation(input: CreateQuotationInput): Promise<Quot
   const now = new Date();
   const document: QuotationModel = {
     ...input,
+    publicShareToken: generatePublicShareToken(),
     quoteNumber: createQuoteNumber(now),
     totalAmount: calculateQuotationTotal(input),
     status: "draft",
@@ -141,4 +190,35 @@ export async function updateQuotationStatusById(id: string, status: QuotationSta
   }
 
   return toQuotation(result);
+}
+
+export async function updateQuotationStatusByToken(
+  token: string,
+  status: CustomerQuotationStatus,
+): Promise<CustomerQuotationStatusUpdateResult> {
+  if (!isValidPublicShareToken(token)) return { outcome: "not_found" };
+
+  const collection = await getQuotationCollection();
+  const existing = await collection.findOne({ publicShareToken: token });
+
+  if (!existing) return { outcome: "not_found" };
+
+  const existingQuotation = toQuotation(existing);
+  if (existingQuotation.status !== "sent") {
+    return { outcome: "not_sent", quotation: toPublicQuotation(existingQuotation, { includeId: false }) };
+  }
+
+  const result = await collection.findOneAndUpdate(
+    { _id: existing._id, status: "sent" },
+    { $set: { status, updatedAt: new Date() } },
+    { returnDocument: "after" },
+  );
+
+  if (!result) return { outcome: "not_found" };
+
+  if (status === "accepted") {
+    await updateLeadStatusById(result.leadId, "converted");
+  }
+
+  return { outcome: "updated", quotation: toPublicQuotation(toQuotation(result), { includeId: false }) };
 }

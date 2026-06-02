@@ -104,6 +104,12 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
     setUpdatingId(null);
   }
 
+  async function handleCopyShareUrl(token: string) {
+    const shareUrl = `${window.location.origin}/quote/share/${token}`;
+    await navigator.clipboard.writeText(shareUrl);
+    setFeedback({ type: "success", message: "Share quote link copied." });
+  }
+
   return (
     <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
       <form onSubmit={handleCreateQuotation} className="grid gap-4 rounded-lg border border-brand-border bg-brand-card p-5">
@@ -204,7 +210,7 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
         ) : (
           <div className="overflow-hidden rounded-lg border border-brand-border bg-brand-card">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[1040px] text-left text-sm">
+              <table className="w-full min-w-[1180px] text-left text-sm">
                 <thead className="bg-stone-100 text-xs uppercase text-brand-muted">
                   <tr>
                     <th className="px-4 py-3 font-semibold">Quote</th>
@@ -212,6 +218,7 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
                     <th className="px-4 py-3 font-semibold">Service</th>
                     <th className="px-4 py-3 font-semibold">Amount</th>
                     <th className="px-4 py-3 font-semibold">Status</th>
+                    <th className="px-4 py-3 font-semibold">Share</th>
                     <th className="px-4 py-3 font-semibold">Public</th>
                     <th className="px-4 py-3 font-semibold">PDF</th>
                   </tr>
@@ -244,6 +251,27 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
                         </select>
                       </td>
                       <td className="px-4 py-4 align-top">
+                        {quote.publicShareToken ? (
+                          <div className="flex flex-col gap-2">
+                            <Link
+                              className="inline-flex rounded-md border border-brand-border px-3 py-2 text-xs font-semibold text-brand-text transition hover:border-brand-accent hover:text-brand-accent"
+                              href={`/quote/share/${quote.publicShareToken}`}
+                            >
+                              View Share Link
+                            </Link>
+                            <button
+                              className="inline-flex rounded-md border border-brand-border px-3 py-2 text-xs font-semibold text-brand-text transition hover:border-brand-accent hover:text-brand-accent"
+                              onClick={() => void handleCopyShareUrl(quote.publicShareToken!)}
+                              type="button"
+                            >
+                              Copy URL
+                            </button>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-brand-muted">Token pending</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-4 align-top">
                         <Link
                           className="inline-flex rounded-md border border-brand-border px-3 py-2 text-xs font-semibold text-brand-text transition hover:border-brand-accent hover:text-brand-accent"
                           href={`/quote/${quote.id}`}
@@ -254,7 +282,11 @@ export function AdminQuotationPanel({ initialLeads, initialQuotations, selectedL
                       <td className="px-4 py-4 align-top">
                         <Link
                           className="inline-flex rounded-md border border-brand-border px-3 py-2 text-xs font-semibold text-brand-text transition hover:border-brand-accent hover:text-brand-accent"
-                          href={`/api/public/quotations/${quote.id}/pdf`}
+                          href={
+                            quote.publicShareToken
+                              ? `/api/public/quotes/${quote.publicShareToken}/pdf`
+                              : `/api/public/quotations/${quote.id}/pdf`
+                          }
                         >
                           Download PDF
                         </Link>

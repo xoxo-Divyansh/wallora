@@ -5,6 +5,7 @@ export type PaintQuality = "basic" | "standard" | "premium";
 export interface Quotation {
   id: string;
   leadId: string;
+  publicShareToken?: string;
   customerName: string;
   customerPhone: string;
   quoteNumber: string;
@@ -26,7 +27,7 @@ export interface Quotation {
 }
 
 export interface PublicQuotation {
-  id: string;
+  id?: string;
   quoteNumber: string;
   customerName: string;
   customerPhone: string;

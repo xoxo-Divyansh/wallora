@@ -34,6 +34,12 @@ To include a customer-facing quotation preview, provide a real quotation id:
 VISUAL_QA_QUOTE_ID=replace_with_quotation_id npm run screenshots
 ```
 
+To include the secure customer share page, provide a real quotation token:
+
+```bash
+VISUAL_QA_QUOTE_TOKEN=replace_with_share_token npm run screenshots
+```
+
 ## Run
 
 ```bash
@@ -85,6 +91,7 @@ visual-qa/screenshots/mobile/admin-login.png
 - `/contact`
 - `/admin/login`
 - `/quote/[id]` when `VISUAL_QA_QUOTE_ID` is provided
+- `/quote/share/[token]` when `VISUAL_QA_QUOTE_TOKEN` is provided
 
 Protected admin pages are intentionally not captured by default because they require a valid admin session.
 

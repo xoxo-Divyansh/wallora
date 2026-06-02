@@ -1,9 +1,9 @@
-import { getPublicQuotationById, isValidQuotationId } from "@/features/quotations";
-import { badRequestResponse, notFoundResponse, serverErrorResponse } from "@/lib/api/response";
+import { getPublicQuotationByToken } from "@/features/quotations";
+import { notFoundResponse, serverErrorResponse } from "@/lib/api/response";
 import { generateQuotationPdf } from "@/lib/quotations/pdf";
 
-interface PublicQuotationPdfRouteProps {
-  params: Promise<{ id: string }>;
+interface PublicQuotePdfTokenRouteProps {
+  params: Promise<{ token: string }>;
 }
 
 export const dynamic = "force-dynamic";
@@ -12,12 +12,11 @@ function safeFilenamePart(value: string) {
   return value.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase();
 }
 
-export async function GET(_request: Request, { params }: PublicQuotationPdfRouteProps) {
+export async function GET(_request: Request, { params }: PublicQuotePdfTokenRouteProps) {
   try {
-    const { id } = await params;
-    if (!isValidQuotationId(id)) return badRequestResponse("Quotation id is invalid.");
+    const { token } = await params;
+    const quotation = await getPublicQuotationByToken(token);
 
-    const quotation = await getPublicQuotationById(id);
     if (!quotation) return notFoundResponse("Quotation was not found.");
 
     const pdfBytes = await generateQuotationPdf(quotation);
@@ -31,7 +30,7 @@ export async function GET(_request: Request, { params }: PublicQuotationPdfRoute
       },
     });
   } catch (error) {
-    console.error("Failed to generate quotation PDF", error);
+    console.error("Failed to generate token quotation PDF", error);
     return serverErrorResponse("Unable to generate quotation PDF.");
   }
 }

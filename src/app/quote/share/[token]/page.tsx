@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPublicQuotationById, isValidQuotationId } from "@/features/quotations";
+import { CustomerQuoteActions } from "@/features/quotations/CustomerQuoteActions";
+import { getPublicQuotationByToken } from "@/features/quotations";
 import type { PublicQuotation } from "@/types/quotation";
 
-interface QuotePreviewPageProps {
-  params: Promise<{ id: string }>;
+interface QuoteSharePageProps {
+  params: Promise<{ token: string }>;
 }
 
 export const dynamic = "force-dynamic";
@@ -43,14 +44,9 @@ function costRows(quotation: PublicQuotation) {
   ];
 }
 
-export async function generateMetadata({ params }: QuotePreviewPageProps): Promise<Metadata> {
-  const { id } = await params;
-
-  if (!isValidQuotationId(id)) {
-    return { title: "Quotation Not Found | Wallora" };
-  }
-
-  const quotation = await getPublicQuotationById(id);
+export async function generateMetadata({ params }: QuoteSharePageProps): Promise<Metadata> {
+  const { token } = await params;
+  const quotation = await getPublicQuotationByToken(token);
 
   if (!quotation) {
     return { title: "Quotation Not Found | Wallora" };
@@ -58,19 +54,18 @@ export async function generateMetadata({ params }: QuotePreviewPageProps): Promi
 
   return {
     title: `${quotation.quoteNumber} | Wallora Quotation`,
-    description: `Quotation preview for ${quotation.customerName} from Wallora.`,
+    description: `Secure quotation preview for ${quotation.customerName} from Wallora.`,
   };
 }
 
-export default async function QuotePreviewPage({ params }: QuotePreviewPageProps) {
-  const { id } = await params;
-  if (!isValidQuotationId(id)) notFound();
+export default async function QuoteSharePage({ params }: QuoteSharePageProps) {
+  const { token } = await params;
+  const quotation = await getPublicQuotationByToken(token);
 
-  const quotation = await getPublicQuotationById(id);
   if (!quotation) notFound();
 
-  const contactHref = `/contact?serviceType=${encodeURIComponent(quotation.serviceType)}&sourceDetail=quotation_preview`;
-  const pdfHref = `/api/public/quotations/${id}/pdf`;
+  const contactHref = `/contact?serviceType=${encodeURIComponent(quotation.serviceType)}&sourceDetail=quotation_share`;
+  const pdfHref = `/api/public/quotes/${token}/pdf`;
 
   return (
     <article className="mx-auto max-w-5xl space-y-8">
@@ -79,7 +74,7 @@ export default async function QuotePreviewPage({ params }: QuotePreviewPageProps
           <div className="space-y-5">
             <div className="flex flex-wrap items-center gap-3">
               <p className="rounded-full border border-brand-border bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">
-                Wallora Quotation
+                Secure Wallora Quote
               </p>
               <span className="rounded-full bg-brand-text px-4 py-2 text-xs font-semibold capitalize text-white">
                 {formatLabel(quotation.status)}
@@ -89,10 +84,10 @@ export default async function QuotePreviewPage({ params }: QuotePreviewPageProps
             <div className="space-y-3">
               <p className="text-sm font-semibold text-brand-muted">{quotation.quoteNumber}</p>
               <h1 className="text-4xl font-semibold tracking-[-0.03em] text-brand-text sm:text-5xl">
-                Quotation summary for {quotation.customerName}
+                Review your quotation, {quotation.customerName}
               </h1>
               <p className="max-w-2xl text-base leading-7 text-brand-muted">
-                A clean preview of your Wallora project estimate, prepared for review before final scope confirmation.
+                This secure quote link lets you review the project scope, download the PDF, and respond to Wallora.
               </p>
             </div>
           </div>
@@ -158,9 +153,7 @@ export default async function QuotePreviewPage({ params }: QuotePreviewPageProps
             {costRows(quotation).map((row) => (
               <div key={row.label} className="flex items-center justify-between gap-4 px-4 py-3 text-sm">
                 <span className="text-brand-muted">{row.label}</span>
-                <span className={row.value < 0 ? "font-semibold text-green-700" : "font-semibold"}>
-                  {formatCurrency(row.value)}
-                </span>
+                <span className={row.value < 0 ? "font-semibold text-green-700" : "font-semibold"}>{formatCurrency(row.value)}</span>
               </div>
             ))}
             <div className="flex items-center justify-between gap-4 px-4 py-4">
@@ -182,19 +175,18 @@ export default async function QuotePreviewPage({ params }: QuotePreviewPageProps
         <aside className="rounded-2xl border border-brand-border bg-[#efe3d1] p-5 shadow-sm sm:p-6">
           <h2 className="text-xl font-semibold">Important Disclaimer</h2>
           <p className="mt-3 text-sm leading-7 text-brand-muted">
-            This is an estimated quotation for review. Final pricing, materials, and execution scope may change after site inspection,
-            surface condition checks, and confirmed customer requirements.
+            This quotation is an estimated proposal. Final pricing may vary after site inspection and scope confirmation.
           </p>
         </aside>
       </section>
 
+      <CustomerQuoteActions initialStatus={quotation.status} token={token} />
+
       <section className="flex flex-col items-stretch justify-between gap-4 rounded-[2rem] bg-brand-text p-6 text-white sm:p-8 lg:flex-row lg:items-center">
         <div className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">Next step</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">Review the scope with Wallora.</h2>
-          <p className="mt-3 text-sm leading-7 text-white/70">
-            If anything needs adjustment, contact the team before confirming execution.
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">Need a copy?</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">Download or discuss this quote.</h2>
+          <p className="mt-3 text-sm leading-7 text-white/70">Download the PDF or contact Wallora if the scope needs adjustment.</p>
         </div>
         <div className="flex flex-col gap-3 sm:flex-row">
           <Link className={`${ctaClass} bg-brand-accent text-white hover:bg-[#7a603e]`} href={pdfHref}>

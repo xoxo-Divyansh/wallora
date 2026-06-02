@@ -1,4 +1,5 @@
 import { QUOTATION_STATUSES, type QuotationStatus } from "@/config/lifecycle";
+import type { CustomerQuotationStatus } from "@/features/quotations/repository";
 import type { CreateQuotationInput, PaintQuality } from "@/types/quotation";
 
 export type QuotationValidationResult =
@@ -30,6 +31,10 @@ function isPaintQuality(value: string | undefined): value is PaintQuality {
 
 export function isValidQuotationStatus(status: string): status is QuotationStatus {
   return QUOTATION_STATUSES.includes(status as QuotationStatus);
+}
+
+export function isValidCustomerQuotationStatus(status: string): status is CustomerQuotationStatus {
+  return status === "accepted" || status === "rejected";
 }
 
 export function validateCreateQuotation(input: unknown): QuotationValidationResult {

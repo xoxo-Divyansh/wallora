@@ -5,6 +5,7 @@ import process from "node:process";
 
 const baseUrl = process.env.VISUAL_QA_BASE_URL ?? "http://localhost:3000";
 const visualQaQuoteId = process.env.VISUAL_QA_QUOTE_ID;
+const visualQaQuoteToken = process.env.VISUAL_QA_QUOTE_TOKEN;
 const outputRoot = path.join(process.cwd(), "visual-qa", "screenshots");
 
 const viewports = [
@@ -29,6 +30,10 @@ const pages = [
 
 if (visualQaQuoteId) {
   pages.push({ label: "quote-preview", path: `/quote/${visualQaQuoteId}` });
+}
+
+if (visualQaQuoteToken) {
+  pages.push({ label: "quote-share", path: `/quote/share/${visualQaQuoteToken}` });
 }
 
 function pageUrl(pagePath) {

@@ -122,18 +122,21 @@ Implemented after the foundation scaffold:
 - Public customer-facing quotation preview at `/quote/[id]`
 - Public-safe quotation API at `/api/public/quotations/[id]`
 - Public quotation PDF download at `/api/public/quotations/[id]/pdf`
+- Secure customer quotation share links at `/quote/share/[token]`
+- Customer quote accept/reject actions for sent quotations
+- Token-based public quotation API and PDF routes under `/api/public/quotes/[token]`
 
 ## Not Implemented Yet (Intentional)
 - User registration, forgot password, and multi-user role management
 - Form validation schemas and full business rules
-- Email sending and customer-facing quotation approval actions
+- Email sending and payment collection
 - Estimator result persistence
 - MongoDB-backed service CRUD
 - MongoDB-backed project CRUD and image uploads
 - Production observability and analytics wiring
 
 ## Next Implementation Steps
-1. Add customer accept/reject actions or email delivery for quotations.
+1. Add email delivery for secure quotation share links.
 2. Add MongoDB-backed content CRUD after admin auth is in place.
 3. Replace placeholder visual blocks with real optimized media assets.
 4. Add audit logging for admin changes.
