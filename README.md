@@ -47,6 +47,14 @@ Generate a local admin password hash with:
 node -e "const bcrypt=require('bcryptjs'); bcrypt.hash('your-password', 10).then(console.log)"
 ```
 
+## Visual QA Screenshots
+Capture full-page visual QA screenshots after the local dev server is running:
+```bash
+npm run screenshots
+```
+
+Screenshots are generated under `visual-qa/screenshots/` and are ignored by Git. See `visual-qa/README.md` for the captured pages, viewport sizes, and manual review guidance.
+
 ## Current Scaffold Status
 Implemented in this phase:
 - Public route foundations:
