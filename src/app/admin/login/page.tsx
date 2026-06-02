@@ -11,7 +11,7 @@ export default async function AdminLoginPage() {
   }
 
   return (
-    <section className="space-y-6">
+    <section className="mx-auto max-w-xl space-y-7">
       <SectionHeading title="Admin Login" description="Sign in to manage leads and operations." />
       <AdminLoginForm />
     </section>

@@ -30,6 +30,22 @@ function pageUrl(pagePath) {
   return new URL(pagePath, baseUrl).toString();
 }
 
+async function hideDevelopmentOverlays(page) {
+  await page.addStyleTag({
+    content: `
+      nextjs-portal,
+      [data-nextjs-toast],
+      [data-nextjs-dialog-overlay],
+      [data-nextjs-dev-tools-button],
+      [aria-label="Open Next.js Dev Tools"],
+      [aria-label="Next.js Dev Tools"] {
+        display: none !important;
+        visibility: hidden !important;
+      }
+    `,
+  });
+}
+
 async function main() {
   console.log(`Visual QA screenshot capture`);
   console.log(`Base URL: ${baseUrl}`);
@@ -65,6 +81,7 @@ async function main() {
             await page.waitForLoadState("load", { timeout: 10000 });
           }
 
+          await hideDevelopmentOverlays(page);
           await page.screenshot({ path: filePath, fullPage: true });
           successes.push({ viewport: viewport.label, label: target.label, path: filePath });
         } catch (error) {

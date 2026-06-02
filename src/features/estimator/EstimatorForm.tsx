@@ -34,7 +34,7 @@ interface EstimatorFormValues {
 }
 
 const inputClass =
-  "w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm text-brand-text outline-none transition focus:border-brand-accent";
+  "w-full rounded-xl border border-brand-border bg-white px-4 py-3 text-sm text-brand-text outline-none transition focus:border-brand-accent";
 
 const propertyLabels: Record<EstimatorPropertyType, string> = {
   apartment: "Apartment",
@@ -134,8 +134,8 @@ export function EstimatorForm({ defaultServiceType }: EstimatorFormProps) {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,420px)]">
-      <form onSubmit={handleSubmit} className="grid gap-4 rounded-lg border border-brand-border bg-brand-card p-6">
-        <div className="grid gap-4 md:grid-cols-2">
+      <form onSubmit={handleSubmit} className="grid gap-5 rounded-2xl border border-brand-border bg-brand-card p-5 shadow-sm sm:p-6">
+        <div className="grid gap-5 md:grid-cols-2">
           <label className="space-y-2 text-sm font-medium">
             Service
             <select className={inputClass} name="serviceType" defaultValue={serviceDefault}>
@@ -194,12 +194,12 @@ export function EstimatorForm({ defaultServiceType }: EstimatorFormProps) {
           <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{state.message}</p>
         ) : null}
 
-        <Button className="w-full md:w-fit" disabled={state.status === "loading"} type="submit">
+        <Button className="w-full rounded-full py-3 md:w-fit" disabled={state.status === "loading"} type="submit">
           {state.status === "loading" ? "Calculating..." : "Calculate Estimate"}
         </Button>
       </form>
 
-      <aside className="rounded-lg border border-brand-border bg-brand-card p-6">
+      <aside className="rounded-2xl border border-brand-border bg-brand-card p-5 shadow-sm sm:p-6">
         {state.status === "success" ? (
           <div className="space-y-5">
             <div>
@@ -241,7 +241,7 @@ export function EstimatorForm({ defaultServiceType }: EstimatorFormProps) {
 
             <Link
               href={contactHref}
-              className="inline-flex w-full items-center justify-center rounded-md bg-brand-accent px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 md:w-fit"
+              className="inline-flex w-full items-center justify-center rounded-full bg-brand-accent px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90 md:w-fit"
             >
               Book Free Site Visit
             </Link>

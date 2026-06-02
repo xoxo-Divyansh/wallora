@@ -4,15 +4,15 @@ import { ServiceCard } from "@/components/ui/ServiceCard";
 import { getServices } from "@/features/services";
 
 const primaryLinkClass =
-  "inline-flex w-full items-center justify-center rounded-md bg-brand-accent px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 sm:w-auto";
+  "inline-flex w-full items-center justify-center rounded-full bg-brand-accent px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90 sm:w-auto";
 const secondaryLinkClass =
-  "inline-flex w-full items-center justify-center rounded-md border border-brand-border bg-brand-card px-4 py-2 text-sm font-semibold text-brand-text transition hover:bg-stone-100 sm:w-auto";
+  "inline-flex w-full items-center justify-center rounded-full border border-brand-border bg-brand-card px-5 py-3 text-sm font-semibold text-brand-text transition hover:bg-stone-100 sm:w-auto";
 
 export default function ServicesPage() {
   const services = getServices();
 
   return (
-    <section className="space-y-8">
+    <section className="space-y-10">
       <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <SectionHeading
           eyebrow="Wallora Services"
@@ -29,7 +29,7 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         {services.map((service) => (
           <ServiceCard
             key={service.id}

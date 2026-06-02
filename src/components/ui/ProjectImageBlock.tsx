@@ -18,11 +18,11 @@ export function ProjectImageBlock({ image, label, className = "" }: ProjectImage
   return (
     <div
       aria-label={image.alt}
-      className={`relative flex min-h-48 overflow-hidden rounded-lg bg-gradient-to-br ${toneClass[image.tone]} ${className}`}
+      className={`relative flex min-h-48 overflow-hidden rounded-2xl bg-gradient-to-br ${toneClass[image.tone]} ${className}`}
       role="img"
     >
       <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.32)_0,rgba(255,255,255,0)_45%)]" />
-      <div className="mt-auto w-full p-4 text-sm font-semibold text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.38)]">
+      <div className="mt-auto w-full p-4 text-xs font-semibold text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.42)] sm:text-sm">
         {label ?? image.alt}
       </div>
     </div>

@@ -21,7 +21,7 @@ const services = [
 ];
 
 const inputClass =
-  "w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm text-brand-text outline-none transition focus:border-brand-accent";
+  "w-full rounded-xl border border-brand-border bg-white px-4 py-3 text-sm text-brand-text outline-none transition focus:border-brand-accent";
 
 interface LeadCaptureFormDefaults {
   serviceType?: string;
@@ -86,8 +86,8 @@ export function LeadCaptureForm({ defaults }: LeadCaptureFormProps) {
   const fieldErrors = state.status === "error" ? state.fields : undefined;
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4 rounded-lg border border-brand-border bg-brand-card p-6">
-      <div className="grid gap-4 md:grid-cols-2">
+    <form onSubmit={handleSubmit} className="grid gap-5 rounded-2xl border border-brand-border bg-brand-card p-5 shadow-sm sm:p-6">
+      <div className="grid gap-5 md:grid-cols-2">
         <label className="space-y-2 text-sm font-medium">
           Name
           <input className={inputClass} name="name" placeholder="Your name" />
@@ -179,7 +179,7 @@ export function LeadCaptureForm({ defaults }: LeadCaptureFormProps) {
         <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{state.message}</p>
       ) : null}
 
-      <Button className="w-full md:w-fit" disabled={state.status === "submitting"} type="submit">
+      <Button className="w-full rounded-full py-3 md:w-fit" disabled={state.status === "submitting"} type="submit">
         {state.status === "submitting" ? "Submitting..." : "Book Free Consultation"}
       </Button>
     </form>

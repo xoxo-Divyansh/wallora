@@ -15,7 +15,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
   const defaults = await searchParams;
 
   return (
-    <section className="space-y-6">
+    <section className="mx-auto max-w-4xl space-y-7">
       <SectionHeading
         title="Book Free Consultation"
         description="Share your requirement and the operations team will pick it up from the lead dashboard."

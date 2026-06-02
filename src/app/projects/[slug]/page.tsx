@@ -10,9 +10,9 @@ interface ProjectDetailPageProps {
 }
 
 const primaryLinkClass =
-  "inline-flex w-full items-center justify-center rounded-md bg-brand-accent px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 sm:w-auto";
+  "inline-flex w-full items-center justify-center rounded-full bg-brand-accent px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90 sm:w-auto";
 const secondaryLinkClass =
-  "inline-flex w-full items-center justify-center rounded-md border border-brand-border bg-brand-card px-4 py-2 text-sm font-semibold text-brand-text transition hover:bg-stone-100 sm:w-auto";
+  "inline-flex w-full items-center justify-center rounded-full border border-brand-border bg-brand-card px-5 py-3 text-sm font-semibold text-brand-text transition hover:bg-stone-100 sm:w-auto";
 
 export function generateStaticParams() {
   return getProjectSlugs().map((slug) => ({ slug }));
@@ -44,11 +44,11 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   const estimatorHref = `/estimator`;
 
   return (
-    <article className="space-y-10">
+    <article className="space-y-12">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
         <SectionHeading eyebrow={`${project.city} - ${project.serviceType}`} title={project.title} description={project.shortDescription} />
 
-        <aside className="rounded-lg border border-brand-border bg-brand-card p-5">
+        <aside className="rounded-2xl border border-brand-border bg-brand-card p-5 shadow-sm sm:p-6">
           <dl className="grid gap-4 text-sm">
             <div>
               <dt className="text-brand-muted">Timeline</dt>
@@ -75,20 +75,20 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
       </div>
 
       <section className="grid gap-4 md:grid-cols-2">
-        <ProjectImageBlock image={project.beforeImages[0]} label="Before" />
-        <ProjectImageBlock image={project.afterImages[0]} label="After" />
+        <ProjectImageBlock className="aspect-[4/3] min-h-0" image={project.beforeImages[0]} label="Before" />
+        <ProjectImageBlock className="aspect-[4/3] min-h-0" image={project.afterImages[0]} label="After" />
       </section>
 
       <section className="grid gap-4 lg:grid-cols-3">
-        <div className="rounded-lg border border-brand-border bg-brand-card p-5">
+        <div className="rounded-2xl border border-brand-border bg-brand-card p-5 shadow-sm sm:p-6">
           <h2 className="text-xl font-semibold">Problem</h2>
           <p className="mt-3 text-sm text-brand-muted">{project.problem}</p>
         </div>
-        <div className="rounded-lg border border-brand-border bg-brand-card p-5">
+        <div className="rounded-2xl border border-brand-border bg-brand-card p-5 shadow-sm sm:p-6">
           <h2 className="text-xl font-semibold">Solution</h2>
           <p className="mt-3 text-sm text-brand-muted">{project.solution}</p>
         </div>
-        <div className="rounded-lg border border-brand-border bg-brand-card p-5">
+        <div className="rounded-2xl border border-brand-border bg-brand-card p-5 shadow-sm sm:p-6">
           <h2 className="text-xl font-semibold">Result</h2>
           <p className="mt-3 text-sm text-brand-muted">{project.resultSummary}</p>
         </div>
@@ -99,12 +99,12 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           <h2 className="text-2xl font-semibold">Gallery</h2>
           <div className="grid gap-4 md:grid-cols-3">
             {project.galleryImages.map((image) => (
-              <ProjectImageBlock key={image.src} className="min-h-56" image={image} />
+              <ProjectImageBlock key={image.src} className="aspect-[4/3] min-h-0" image={image} />
             ))}
           </div>
         </div>
 
-        <aside className="rounded-lg border border-brand-border bg-brand-card p-5">
+        <aside className="rounded-2xl border border-brand-border bg-brand-card p-5 shadow-sm sm:p-6">
           <h2 className="text-xl font-semibold">Materials Used</h2>
           <ul className="mt-4 space-y-2 text-sm text-brand-muted">
             {project.materialsUsed.map((material) => (

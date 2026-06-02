@@ -10,7 +10,7 @@ type LoginState =
   | { status: "error"; message: string };
 
 const inputClass =
-  "w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm text-brand-text outline-none transition focus:border-brand-accent";
+  "w-full rounded-xl border border-brand-border bg-white px-4 py-3 text-sm text-brand-text outline-none transition focus:border-brand-accent";
 
 export function AdminLoginForm() {
   const router = useRouter();
@@ -42,7 +42,7 @@ export function AdminLoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid max-w-md gap-4 rounded-lg border border-brand-border bg-brand-card p-6">
+    <form onSubmit={handleSubmit} className="grid max-w-md gap-5 rounded-2xl border border-brand-border bg-brand-card p-5 shadow-sm sm:p-6">
       <label className="space-y-2 text-sm font-medium">
         Email
         <input className={inputClass} name="email" placeholder="admin@example.com" type="email" />
@@ -57,7 +57,7 @@ export function AdminLoginForm() {
         <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{state.message}</p>
       ) : null}
 
-      <Button disabled={state.status === "submitting"} type="submit">
+      <Button className="rounded-full py-3" disabled={state.status === "submitting"} type="submit">
         {state.status === "submitting" ? "Signing in..." : "Sign In"}
       </Button>
     </form>

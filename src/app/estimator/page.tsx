@@ -10,7 +10,7 @@ export default async function EstimatorPage({ searchParams }: EstimatorPageProps
   const { serviceType } = await searchParams;
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-7">
       <SectionHeading
         title="Cost Estimator"
         description="Get an indicative planning range before booking a free Wallora site visit."
