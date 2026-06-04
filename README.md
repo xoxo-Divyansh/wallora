@@ -61,6 +61,12 @@ npm run screenshots
 
 Screenshots are generated under `visual-qa/screenshots/` and are ignored by Git. See `visual-qa/README.md` for the captured pages, viewport sizes, and manual review guidance.
 
+## Deployment
+Production deployment preparation is documented in:
+- `docs/deployment-guide.md`
+- `docs/production-smoke-test.md`
+- `docs/deployment-readiness-checklist.md`
+
 ## Current Scaffold Status
 Implemented in this phase:
 - Public route foundations:
