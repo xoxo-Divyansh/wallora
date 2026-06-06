@@ -40,9 +40,10 @@ export function LeadCaptureForm({ defaults }: LeadCaptureFormProps) {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     setState({ status: "submitting" });
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
     const payload = {
       name: formData.get("name"),
       phone: formData.get("phone"),
@@ -76,7 +77,7 @@ export function LeadCaptureForm({ defaults }: LeadCaptureFormProps) {
       return;
     }
 
-    event.currentTarget.reset();
+    form.reset();
     setState({
       status: "success",
       message: "Your consultation request is saved. The Wallora team can now see it in admin leads.",
