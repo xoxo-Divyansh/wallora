@@ -5,5 +5,5 @@ export interface AppConfig {
 
 export const appConfig: AppConfig = {
   appName: "Wallora",
-  defaultCity: "Bangalore",
+  defaultCity: "Lucknow",
 };

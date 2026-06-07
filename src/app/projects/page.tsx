@@ -18,8 +18,8 @@ export default function ProjectsPage() {
       <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <SectionHeading
           eyebrow="Project Proof"
-          title="Realistic transformations, documented like case studies."
-          description="Browse before-after stories across painting, waterproofing, wallpaper, wood polish, and interior finishing."
+          title="Sample transformations, documented like case studies."
+          description="Browse demo-safe before-after presentations across painting, waterproofing, wallpaper, wood polish, and interior finishing."
         />
         <div className="flex flex-col gap-3 sm:flex-row">
           <Link className={primaryLinkClass} href="/contact">
@@ -32,6 +32,9 @@ export default function ProjectsPage() {
       </div>
 
       <div className="flex flex-wrap gap-2">
+        <span className="rounded-full border border-brand-border bg-[#fbf7ef] px-3 py-1.5 text-xs font-semibold text-brand-text">
+          Sample project presentation for demo purposes
+        </span>
         {tags.map((tag) => (
           <span key={tag} className="rounded-full border border-brand-border bg-brand-card px-3 py-1.5 text-xs font-semibold text-brand-muted">
             {tag}

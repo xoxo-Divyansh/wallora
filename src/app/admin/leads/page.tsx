@@ -21,7 +21,10 @@ export default async function AdminLeadsPage() {
 
   return (
     <section className="space-y-6">
-      <SectionHeading title="Lead Management" description="Newest consultation requests from the public lead form." />
+      <SectionHeading
+        title="Lead Pipeline"
+        description="Track consultation requests, follow-up progress, and quote-ready customers from one place."
+      />
 
       {errorMessage ? (
         <div className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-800">{errorMessage}</div>

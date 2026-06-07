@@ -9,8 +9,8 @@ export default function GalleryPage() {
     <section className="space-y-10">
       <SectionHeading
         eyebrow="Gallery Proof"
-        title="A visual archive of Wallora transformations."
-        description="Gallery proof is grouped by service so visitors can quickly scan the kind of finish they want."
+        title="A visual guide to Wallora finishes."
+        description="Sample project visuals are grouped by service so visitors can quickly scan the kind of finish they want."
       />
 
       <div className="space-y-12">

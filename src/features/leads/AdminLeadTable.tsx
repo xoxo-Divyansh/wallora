@@ -73,7 +73,7 @@ export function AdminLeadTable({ initialLeads }: AdminLeadTableProps) {
   if (leads.length === 0) {
     return (
       <div className="rounded-lg border border-brand-border bg-brand-card p-6 text-sm text-brand-muted">
-        No leads submitted yet.
+        No consultation requests yet. New website enquiries will appear here for follow-up.
       </div>
     );
   }
@@ -81,7 +81,7 @@ export function AdminLeadTable({ initialLeads }: AdminLeadTableProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-3 text-sm text-brand-muted">
-        <p>{leadCountLabel}</p>
+        <p>{leadCountLabel} in the pipeline</p>
         {feedback ? (
           <p className={feedback.type === "success" ? "text-green-700" : "text-red-700"}>{feedback.message}</p>
         ) : null}
@@ -98,7 +98,7 @@ export function AdminLeadTable({ initialLeads }: AdminLeadTableProps) {
                 <th className="px-4 py-3 font-semibold">Status</th>
                 <th className="px-4 py-3 font-semibold">Source</th>
                 <th className="px-4 py-3 font-semibold">Created</th>
-                <th className="px-4 py-3 font-semibold">Quote</th>
+                <th className="px-4 py-3 font-semibold">Next Step</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-brand-border">

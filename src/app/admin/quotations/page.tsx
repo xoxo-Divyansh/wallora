@@ -29,7 +29,10 @@ export default async function AdminQuotationsPage({ searchParams }: AdminQuotati
 
   return (
     <section className="space-y-6">
-      <SectionHeading title="Quotation Management" description="Create draft quotes from leads and move them through the quote lifecycle." />
+      <SectionHeading
+        title="Quotation Workflow"
+        description="Create draft quotes from leads, send secure share links, and track sent, accepted, or rejected proposals."
+      />
 
       {errorMessage ? (
         <div className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-800">{errorMessage}</div>

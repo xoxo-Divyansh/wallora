@@ -18,7 +18,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
     <section className="mx-auto max-w-4xl space-y-7">
       <SectionHeading
         title="Book Free Consultation"
-        description="Share your requirement and the operations team will pick it up from the lead dashboard."
+        description="Share your requirement and Wallora will follow up with a practical next step, site visit, or quotation discussion."
       />
       <LeadCaptureForm defaults={defaults} />
     </section>

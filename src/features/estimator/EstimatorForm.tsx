@@ -13,6 +13,7 @@ import {
   type EstimatorQualityTier,
   type EstimatorServiceType,
 } from "@/lib/estimator";
+import { createEstimatorWhatsAppMessage, createWhatsAppUrl } from "@/lib/whatsapp";
 
 interface EstimatorFormProps {
   defaultServiceType?: EstimatorServiceType;
@@ -83,6 +84,25 @@ export function EstimatorForm({ defaultServiceType }: EstimatorFormProps) {
     }
 
     return `/contact?${params.toString()}`;
+  }, [state]);
+
+  const whatsAppHref = useMemo(() => {
+    if (state.status !== "success") {
+      return createWhatsAppUrl();
+    }
+
+    const estimatedRange = `${formatCurrency(state.data.minPrice)} - ${formatCurrency(state.data.maxPrice)}`;
+
+    return createWhatsAppUrl(
+      createEstimatorWhatsAppMessage({
+        serviceType: SERVICE_LABELS[state.context.serviceType],
+        propertyType: propertyLabels[state.context.propertyType],
+        areaSize: state.context.areaSize,
+        qualityTier: qualityLabels[state.context.qualityTier],
+        city: state.context.city,
+        estimatedRange,
+      }),
+    );
   }, [state]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -180,7 +200,7 @@ export function EstimatorForm({ defaultServiceType }: EstimatorFormProps) {
 
           <label className="space-y-2 text-sm font-medium">
             City
-            <input className={inputClass} name="city" placeholder="Bangalore" />
+            <input className={inputClass} name="city" placeholder="Lucknow" />
           </label>
 
           <label className="space-y-2 text-sm font-medium">
@@ -245,6 +265,14 @@ export function EstimatorForm({ defaultServiceType }: EstimatorFormProps) {
             >
               Book Free Site Visit
             </Link>
+            <a
+              className="inline-flex w-full items-center justify-center rounded-full border border-brand-border bg-white px-5 py-3 text-sm font-semibold text-brand-text transition hover:border-brand-accent hover:text-brand-accent md:w-fit"
+              href={whatsAppHref}
+              rel="noreferrer"
+              target="_blank"
+            >
+              Discuss on WhatsApp
+            </a>
           </div>
         ) : (
           <div className="space-y-3 text-sm text-brand-muted">

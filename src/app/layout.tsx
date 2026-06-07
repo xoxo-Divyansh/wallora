@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lora, Manrope } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
+import { WhatsAppFloatingButton } from "@/components/ui/WhatsAppFloatingButton";
 import "./globals.css";
 
 const headingFont = Lora({
@@ -31,6 +32,7 @@ export default function RootLayout({
         <main className="mx-auto min-h-[calc(100vh-9rem)] w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           {children}
         </main>
+        <WhatsAppFloatingButton />
         <Footer />
       </body>
     </html>

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 type SubmitState =
   | { status: "idle" }
@@ -17,7 +18,6 @@ const services = [
   "Waterproofing",
   "Wood Polish/Coating",
   "False Ceiling",
-  "Deep Cleaning",
 ];
 
 const inputClass =
@@ -80,7 +80,7 @@ export function LeadCaptureForm({ defaults }: LeadCaptureFormProps) {
     form.reset();
     setState({
       status: "success",
-      message: "Your consultation request is saved. The Wallora team can now see it in admin leads.",
+      message: "Your consultation request is saved. The Wallora team will review it and follow up with the next step.",
     });
   }
 
@@ -109,7 +109,7 @@ export function LeadCaptureForm({ defaults }: LeadCaptureFormProps) {
 
         <label className="space-y-2 text-sm font-medium">
           City
-          <input className={inputClass} defaultValue={defaults?.city} name="city" placeholder="Bangalore" />
+          <input className={inputClass} defaultValue={defaults?.city} name="city" placeholder="Lucknow" />
           {fieldErrors?.city ? <span className="text-xs text-red-700">{fieldErrors.city}</span> : null}
         </label>
 
@@ -173,7 +173,17 @@ export function LeadCaptureForm({ defaults }: LeadCaptureFormProps) {
       </label>
 
       {state.status === "success" ? (
-        <p className="rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-800">{state.message}</p>
+        <div className="space-y-3 rounded-md border border-green-200 bg-green-50 px-3 py-3 text-sm text-green-800">
+          <p>{state.message}</p>
+          <a
+            className="inline-flex rounded-full bg-[#1f7a4d] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#17643e]"
+            href={createWhatsAppUrl("Hi Wallora, I have submitted a consultation request and would like to continue the conversation.")}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Continue on WhatsApp
+          </a>
+        </div>
       ) : null}
 
       {state.status === "error" ? (

@@ -46,7 +46,12 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   return (
     <article className="space-y-12">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <SectionHeading eyebrow={`${project.city} - ${project.serviceType}`} title={project.title} description={project.shortDescription} />
+        <div className="space-y-4">
+          <SectionHeading eyebrow={`${project.city} - ${project.serviceType}`} title={project.title} description={project.shortDescription} />
+          <p className="w-fit rounded-full border border-brand-border bg-[#fbf7ef] px-4 py-2 text-xs font-semibold text-brand-muted">
+            Sample project presentation for demo purposes.
+          </p>
+        </div>
 
         <aside className="rounded-2xl border border-brand-border bg-brand-card p-5 shadow-sm sm:p-6">
           <dl className="grid gap-4 text-sm">

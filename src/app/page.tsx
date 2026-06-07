@@ -8,10 +8,10 @@ import { getServices } from "@/features/services/repository";
 const trustCards = ["Free Site Visit", "Transparent Estimate", "Professional Finish"];
 
 const trustStats = [
-  { value: "500+", label: "spaces planned" },
+  { value: "500+", label: "sample spaces planned" },
   { value: "7", label: "service categories" },
-  { value: "Quote-led", label: "workflow" },
-  { value: "Admin-managed", label: "execution" },
+  { value: "Quote PDF", label: "before execution" },
+  { value: "WhatsApp", label: "support ready" },
 ];
 
 const steps = [
@@ -29,7 +29,7 @@ const steps = [
   },
   {
     title: "Execution and Handover",
-    description: "Work moves through a managed admin workflow until final review.",
+    description: "Work moves through planned follow-ups, status tracking, and a final finish review.",
   },
 ];
 
@@ -37,7 +37,8 @@ const reasons = [
   "Transparent pricing before execution starts",
   "Clean site practices and finish-led planning",
   "Design guidance across paints, textures, and interior finishes",
-  "Workflow-backed service management from lead to quotation",
+  "Lead follow-up and quotation tracking built for service teams",
+  "Quote PDFs and WhatsApp sharing for easier customer conversations",
 ];
 
 const ctaClass =
@@ -81,7 +82,7 @@ export default function HomePage() {
               {trustCards.map((card) => (
                 <div key={card} className="rounded-2xl border border-brand-border bg-white/75 p-4 shadow-sm backdrop-blur">
                   <p className="text-sm font-semibold text-brand-text">{card}</p>
-                  <p className="mt-1 text-xs leading-5 text-brand-muted">Built into the Wallora service flow.</p>
+                  <p className="mt-1 text-xs leading-5 text-brand-muted">Clear next steps from first call to final finish.</p>
                 </div>
               ))}
             </div>
@@ -118,7 +119,7 @@ export default function HomePage() {
           <SectionHeading
             eyebrow="Services"
             title="Start with the finish your space actually needs."
-            description="A focused preview of Wallora's core service lines, powered by the shared MVP service catalog."
+            description="Explore core Wallora service lines for painting, waterproofing, wallpaper, wood polish, and interior finishing."
           />
           <Link className="text-sm font-semibold text-brand-accent hover:text-brand-text" href="/services">
             View all services
@@ -137,7 +138,7 @@ export default function HomePage() {
           <h2 className="text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">Know your approximate project cost before booking.</h2>
           <p className="max-w-xl leading-7 text-brand-muted">
             Choose service type, property type, area, and quality tier to get a deterministic price range, timeline, inclusions,
-            assumptions, and a booking CTA.
+            assumptions, and a clear next step for a free site visit.
           </p>
           <Link className={`${ctaClass} bg-brand-accent text-white hover:bg-brand-text`} href="/estimator">
             Try Cost Estimator
@@ -147,7 +148,7 @@ export default function HomePage() {
           {["Area", "Quality", "Timeline"].map((item, index) => (
             <div key={item} className={`rounded-[1.5rem] bg-white/75 p-5 shadow-sm ${index === 1 ? "sm:mt-10" : ""}`}>
               <p className="text-sm font-semibold text-brand-text">{item}</p>
-              <p className="mt-16 text-sm leading-6 text-brand-muted">Simple inputs, practical output, no payment step.</p>
+              <p className="mt-16 text-sm leading-6 text-brand-muted">Simple inputs, practical guidance, and a no-pressure next step.</p>
             </div>
           ))}
         </div>
@@ -157,8 +158,8 @@ export default function HomePage() {
         <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
           <SectionHeading
             eyebrow="Project Proof"
-            title="Realistic case studies that show the workflow in action."
-            description="Featured transformations from the static project data layer, ready for real photography later."
+            title="Sample case studies that show how a project can be planned."
+            description="Recent project examples showing how Wallora plans, estimates, and presents painting and interior finishing work."
           />
           <div className="flex gap-4 text-sm font-semibold">
             <Link className="text-brand-accent hover:text-brand-text" href="/projects">
@@ -180,7 +181,7 @@ export default function HomePage() {
         <SectionHeading
           eyebrow="How It Works"
           title="A clear path from first message to finished handover."
-          description="The homepage now reflects the actual product flow: lead capture, estimation, quotation, and managed execution."
+          description="Share your requirement, review an estimate, receive a structured quotation, and keep the next step visible."
         />
         <div className="grid gap-4 sm:grid-cols-2">
           {steps.map((step, index) => (

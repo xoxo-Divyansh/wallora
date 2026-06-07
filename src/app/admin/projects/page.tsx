@@ -6,9 +6,9 @@ export default async function AdminProjectsPage() {
 
   return (
     <section className="space-y-6">
-      <SectionHeading title="Project Case Studies" description="Projects CRUD and publishing scaffold." />
+      <SectionHeading title="Project Presentations" description="Review the sample case studies and gallery proof shown to visitors." />
       <div className="rounded-xl border border-brand-border bg-brand-card p-6 text-brand-muted">
-        Project asset management and publication workflow will be implemented in `features/projects`.
+        Project editing and media uploads are planned for a future admin release. Current case studies are demo-safe sample presentations.
       </div>
     </section>
   );

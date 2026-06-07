@@ -1,8 +1,8 @@
 # Wallora
 
-Wallora is a Next.js App Router scaffold for a premium home painting and interior finishing platform.
+Wallora is a Next.js App Router application for a premium home painting and interior finishing platform.
 
-This repository currently implements the **foundation phase** aligned with the documentation in `docs/`:
+This repository implements the customer-facing website, admin workflow, quotation system, and deployment-ready documentation aligned with `docs/`:
 - `docs/product-spec.md`
 - `docs/architecture.md`
 - `docs/user-flow.md`
@@ -67,8 +67,8 @@ Production deployment preparation is documented in:
 - `docs/production-smoke-test.md`
 - `docs/deployment-readiness-checklist.md`
 
-## Current Scaffold Status
-Implemented in this phase:
+## Application Foundation
+Implemented route and module foundations:
 - Public route foundations:
   - `/`
   - `/services`
@@ -85,7 +85,7 @@ Implemented in this phase:
   - `/admin/quotations`
   - `/admin/services`
   - `/admin/projects`
-- API placeholder routes:
+- API route foundations:
   - `/api/leads`
   - `/api/services`
   - `/api/projects`
@@ -106,7 +106,7 @@ Implemented in this phase:
   - Lifecycle constants in `src/config/lifecycle.ts`
 
 ## Current Feature Status
-Implemented after the foundation scaffold:
+Implemented features:
 - Lead capture form at `/contact`
 - Server-side lead validation
 - MongoDB connection layer with development-safe cached client
@@ -138,6 +138,7 @@ Implemented after the foundation scaffold:
 - Customer quote accept/reject actions for sent quotations
 - Token-based public quotation API and PDF routes under `/api/public/quotes/[token]`
 - Protected admin quote email delivery through Resend
+- Client-ready demo polish with localized Lucknow-area sample content, professional footer, WhatsApp CTAs, and more business-friendly public/admin copy
 
 ## Not Implemented Yet (Intentional)
 - User registration, forgot password, and multi-user role management
