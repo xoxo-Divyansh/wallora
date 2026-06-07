@@ -15,7 +15,7 @@ export default async function AdminLeadsPage() {
   try {
     leads = await getLeads();
   } catch (error) {
-    console.error("Admin leads page failed to load", error);
+    console.error("Admin leads page failed to load lead data", error);
     errorMessage = "Lead data is unavailable. Check MONGODB_URI and database connectivity.";
   }
 

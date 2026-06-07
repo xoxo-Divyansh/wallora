@@ -30,6 +30,10 @@ function getMongoUri(): string {
   return uri;
 }
 
+export function getDatabaseName(): string {
+  return process.env.MONGODB_DB ?? DB_NAME;
+}
+
 export async function getMongoClient(): Promise<MongoClient> {
   if (cached.client) {
     return cached.client;
@@ -45,7 +49,7 @@ export async function getMongoClient(): Promise<MongoClient> {
 
 export async function getDb(): Promise<Db> {
   const client = await getMongoClient();
-  return client.db(process.env.MONGODB_DB ?? DB_NAME);
+  return client.db(getDatabaseName());
 }
 
 export async function connectToDatabase(): Promise<void> {
